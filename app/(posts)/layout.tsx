@@ -2,6 +2,8 @@ import React from 'react'
 import ArticleHeading from '../components/articleheading';
 import PostContent from '../components/postcontent';
 import Methodology from '../components/methodology';
+import Page from './first-post/page.mdx'
+
 
 export default function PostsLayout({
   children,
@@ -11,8 +13,9 @@ export default function PostsLayout({
   return (
     <>
       <ArticleHeading />
-      <PostContent />
-      <Methodology />
+      {/* <PostContent /> */}
+      <Page />
+      {/* <Methodology /> */}
     </>
   )
 }

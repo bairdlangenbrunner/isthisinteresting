@@ -48,7 +48,7 @@
   }
 
   .image-widths {
-    @apply sm:w-[600px];
+    @apply md:w-[600px];
     @apply w-[100%];
   }
 
@@ -57,5 +57,29 @@
   }
   a:hover {
     @apply text-stone-500;
+  }
+
+  .h1-post {
+    font-weight: 650;
+  }
+
+  .h2-post,
+  .h3-post {
+    font-weight: 700;
+    @apply sm:text-xl;
+    @apply text-base;
+  }
+
+  .h2-post {
+    @apply sm:text-[1.125rem];
+    @apply font-serif;
+    @apply leading-[1.25rem];
+    @apply sm:leading-[1.5rem];
+  }
+
+  .h3-post {
+    @apply mt-[2rem];
+    @apply mb-[1.5rem];
+    @apply text-[24px];
   }
 }
