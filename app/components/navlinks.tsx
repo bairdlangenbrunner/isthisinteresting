@@ -1,18 +1,24 @@
+"use client";
 import Link from "next/link";
 import React from "react";
+import { clsx } from "clsx";
+import { usePathname } from "next/navigation";
 
 const links = [
   { name: "about", hidden: false, href: "/about" },
-  { name: "archive", hidden: true, href: "/archive" },
+  { name: "archive", hidden: false, href: "/archive" },
 ];
 
 const NavLinks = () => {
+  const pathname = usePathname();
   return (
-    <div className="flex justify-between text-lg sm:text-xl">
+    <div className="flex justify-between text-sm sm:text-lg">
       {/* is this interesting div */}
       <div>
         <Link key="is this interesting" href="/" className="">
-          <span className="text-white hover:text-[magenta]">is this interesting</span>
+          <span className="text-white hover:text-[magenta]">
+            is this interesting
+          </span>
         </Link>
       </div>
       {/* about, archive div */}
@@ -24,7 +30,13 @@ const NavLinks = () => {
               href={link.href}
               className={link.hidden ? "hidden" : ""}
             >
-              <span className="text-white hover:text-[magenta]">{link.name}</span>
+              <span
+                className={clsx("text-white hover:text-[magenta]", {
+                  "text-[magenta]": pathname == link.href,
+                })}
+              >
+                {link.name}
+              </span>
             </Link>
           );
         })}

@@ -7,7 +7,9 @@
 
 @layer base {
   html {
-    font-family: var(--font-roboto-mono); /* defined in layout.tsx*/
+    @apply font-monospace;
+    /* font-family: var(--font-roboto-mono); defined in layout.tsx */
+    @apply text-stone-700;
   }
 
   /* * p,
@@ -19,7 +21,8 @@
   } */
 
   p {
-    font-family: var(--font-domine); /* defined in layout.tsx*/
+    /* font-family: var(--font-domine); defined in layout.tsx */
+    @apply font-serif;
     @apply leading-[1.333rem];
     @apply sm:leading-[1.666rem];
     @apply sm:text-[1.125rem];
@@ -27,12 +30,12 @@
     @apply sm:my-[1.25rem];
   }
 
-  p,
+  /* p,
   h1,
   h2,
   h3 {
     @apply text-stone-700;
-  }
+  } */
 
   .navbar-footer-widths {
     @apply max-w-[90%];

@@ -3,22 +3,23 @@ import { Domine, Roboto_Mono, Open_Sans } from "next/font/google";
 import "./globals.css";
 import NavBar from "./components/navbar";
 import Footer from "./components/footer";
+import ArticleHeading from "./components/articleheading";
 
 // font info
 // https://nextjs.org/docs/app/building-your-application/optimizing/fonts
 const domine = Domine({
   subsets: ["latin"],
-  variable: "--font-domine",
+  variable: "--font-serif",
   display: "optional",
 });
 const roboto_mono = Roboto_Mono({
   subsets: ["latin"],
-  variable: "--font-roboto-mono",
+  variable: "--font-mono",
   display: "optional",
 });
 const open_sans = Open_Sans({
   subsets: ["latin"],
-  variable: "--font-open-sans",
+  variable: "--font-sans",
   display: "optional",
 });
 
@@ -40,9 +41,9 @@ export default function RootLayout({
       <body className="bg-white flex flex-col">
         <NavBar />
         <div className="h-screen flex flex-col">
-          <div className="pt-[36px] pb-[100px] w-screen flex-grow">
+          <div className="pt-[28px] sm:pt-[36px] pb-[100px] w-screen flex-grow">
             {/* div that includes footer */}
-            <div className="paragraph-widths mx-auto">
+            <div className="">
               {/* everything in all pages should go here */}
               {children}
             </div>
