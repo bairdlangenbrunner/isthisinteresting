@@ -43,7 +43,7 @@ export default function RootLayout({
         <div className="h-screen flex flex-col">
           <div className="pt-[28px] sm:pt-[36px] w-screen flex-grow">
             {/* div that includes footer */}
-            <div className="h-full bg-pink-200">
+            <div className="h-full">
               {/* gotta pass h-full here so that all children can inherit */}
               {/* everything in all pages should go here */}
               {children}
