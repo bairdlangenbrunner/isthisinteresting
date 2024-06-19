@@ -3,9 +3,10 @@ import Link from "next/link";
 
 export default function Home() {
   return (
-    <main>
-      <div className="navbar-footer-widths mx-auto flex flex-col bg-pink-200">
-        <div className="mt-[100px] h-full">
+    // h-full must be passed to main and to div
+    <main className="h-full">
+      <div className="flex flex-col navbar-footer-widths mx-auto h-full">
+        <div className="flex flex-col flex-grow justify-center">
           <h1 className="sm:text-6xl text-5xl text-right font-[900] font-monospace">
             is this
             <br />
@@ -16,8 +17,8 @@ export default function Home() {
             seriously
           </h1>
         </div>
-        <div className="w-[300px] mt-[100px]">
-          <div className="m-auto text-lg text-left leading-[1.25rem] font-monospace">
+        <div className="flex flex-col flex-1 justify-start">
+          <div className="text-lg text-left leading-[1.25rem] font-monospace w-[300px]">
             this site is deeply under construction, but you can see my inaugural
             post <Link href="/first-post">here</Link>
           </div>

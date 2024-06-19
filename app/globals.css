@@ -21,7 +21,6 @@
   } */
 
   p {
-    /* font-family: var(--font-domine); defined in layout.tsx */
     @apply font-serif;
     @apply leading-[1.333rem];
     @apply sm:leading-[1.666rem];
@@ -48,8 +47,8 @@
   }
 
   .image-widths {
-    @apply md:w-[600px];
     @apply w-[100%];
+    @apply sm:w-[600px];
   }
 
   a {
@@ -59,27 +58,30 @@
     @apply text-stone-500;
   }
 
-  .h1-post {
-    font-weight: 650;
+  h1 {
+    @apply font-[650];
   }
 
-  .h2-post,
-  .h3-post {
-    font-weight: 700;
-    @apply sm:text-xl;
+  h2 {
+    @apply font-[700];
     @apply text-base;
-  }
-
-  .h2-post {
     @apply sm:text-[1.125rem];
     @apply font-serif;
     @apply leading-[1.25rem];
     @apply sm:leading-[1.5rem];
   }
 
-  .h3-post {
+  h3 {
+    @apply font-[700];
     @apply mt-[2rem];
     @apply mb-[1.5rem];
-    @apply text-[24px];
+    @apply text-[1.5rem];
+  }
+
+  figcaption {
+    @apply text-neutral-500;
+    @apply text-xs;
+    @apply mt-[0.75rem];
+    @apply font-monospace;
   }
 }

@@ -1,9 +1,16 @@
-import React from 'react'
+import React from "react";
+import { getPosts } from "../posts";
 
-const Page = () => {
+export default async function Page() {
+
+  const posts = await getPosts();
+  console.log(posts)
+
   return (
-    <div>Page</div>
-  )
-}
+    <>
+      <div>archive</div>
 
-export default Page
+
+    </>
+  );
+};
