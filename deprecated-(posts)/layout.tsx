@@ -1,19 +1,8 @@
-import React from "react";
+import React from 'react'
 // import ArticleHeading from '../components/articleheading';
-import PostContent from "../components/postcontent";
-import Methodology from "../components/methodology";
-// import Page from "./first-post/page.mdx";
-
-interface LayoutProps {
-  children: React.ReactNode;
-  frontMatter: {
-    title: string;
-    standfirst: string;
-    publishDate: string;
-    publish: boolean;
-    author: string
-  }
-}
+// import PostContent from '../app/components/postcontent';
+// import Methodology from '../app/components/methodology';
+import Page from './first-post/page.mdx'
 
 const frontMatter = {
   title: "Baby's first post",
@@ -28,7 +17,9 @@ const ArticleHeading = () => {
   return (
     <div className="flex flex-col p-[15px] gap-[15px] my-[1.25rem] sm:my-[1.75rem] bg-[rgb(255,0,255,0.05)] rounded-lg paragraph-widths mx-auto">
       <div className="">
-        <h1 className="font-[900] text-3xl sm:text-4xl">{frontMatter.title}</h1>
+        <h1 className="font-[900] text-3xl sm:text-4xl">
+          {frontMatter.title}
+        </h1>
       </div>
 
       <div className="">
@@ -57,5 +48,7 @@ export default function PostsLayout({
       {/* <Page /> */}
       {/* <Methodology /> */}
     </>
-  );
+  )
 }
+
+
