@@ -1,19 +1,6 @@
 import React from "react";
-// import ArticleHeading from '../components/articleheading';
-import PostContent from "../components/postcontent";
-import Methodology from "../components/methodology";
-// import Page from "./first-post/page.mdx";
-
-interface LayoutProps {
-  children: React.ReactNode;
-  frontMatter: {
-    title: string;
-    standfirst: string;
-    publishDate: string;
-    publish: boolean;
-    author: string
-  }
-}
+// import { Post } from "@/lib/posts";
+import { getPosts } from "@/lib/posts";
 
 const frontMatter = {
   title: "Baby's first post",
@@ -24,35 +11,70 @@ const frontMatter = {
   author: "Baird Langenbrunner",
 };
 
-const ArticleHeading = () => {
-  return (
-    <div className="flex flex-col p-[15px] gap-[15px] my-[1.25rem] sm:my-[1.75rem] bg-[rgb(255,0,255,0.05)] rounded-lg paragraph-widths mx-auto">
-      <div className="">
-        <h1 className="font-[900] text-3xl sm:text-4xl">{frontMatter.title}</h1>
-      </div>
+// export default async function ArticleHeading({ posts }: { posts: Post[] }) {
+//   const posts = await getPosts();
+//   const dateOptions = {
+//     timeZone: "America/New_York",
+//     // weekday: "long",
+//     year: "numeric",
+//     month: "long",
+//     day: "numeric",
+//   };
 
-      <div className="">
-        <h2 className="font-[700] sm:text-[1.125rem] text-base font-serif leading-[1.25rem] sm:leading-[1.5rem]">
-          {frontMatter.standfirst}
-        </h2>
-      </div>
+//   return (
+//     <div className="flex flex-col p-[15px] gap-[15px] my-[1.25rem] sm:my-[1.75rem] bg-[rgb(255,0,255,0.05)] rounded-lg paragraph-widths mx-auto">
+//       <div className="">
+//         <h1 className="font-[900] text-3xl sm:text-4xl">{frontMatter.title}</h1>
+//       </div>
 
-      <div className="flex justify-between">
-        <div className="text-xs">{frontMatter.publishDate}</div>
-        <div className="text-xs">by {frontMatter.author}</div>
-      </div>
-    </div>
-  );
-};
+//       <div className="">
+//         <h2 className="font-[700] sm:text-[1.125rem] text-base font-serif leading-[1.25rem] sm:leading-[1.5rem]">
+//           {frontMatter.standfirst}
+//         </h2>
+//       </div>
 
-export default function PostsLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+//       <div className="flex justify-between">
+//         <div className="text-xs">{frontMatter.publishDate}</div>
+//         <div className="text-xs">by {frontMatter.author}</div>
+//       </div>
+//     </div>
+//   );
+// }
+
+export default async function PostsLayout({children,}: Readonly<{children: React.ReactNode;}>) {
+  
+  const posts = await getPosts();
+  console.log(posts)
+  // console.log(children)
+  const dateOptions = {
+    timeZone: "America/New_York",
+    // weekday: "long",
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  };
+
   return (
     <>
-      <ArticleHeading />
+      <div className="flex flex-col p-[15px] gap-[15px] my-[1.25rem] sm:my-[1.75rem] bg-[rgb(255,0,255,0.05)] rounded-lg paragraph-widths mx-auto">
+        <div className="">
+          <h1 className="font-[900] text-3xl sm:text-4xl">
+            {frontMatter.title}
+          </h1>
+        </div>
+
+        <div className="">
+          <h2 className="font-[700] sm:text-[1.125rem] text-base font-serif leading-[1.25rem] sm:leading-[1.5rem]">
+            {frontMatter.standfirst}
+          </h2>
+        </div>
+
+        <div className="flex justify-between">
+          <div className="text-xs">{frontMatter.publishDate}</div>
+          <div className="text-xs">by {frontMatter.author}</div>
+        </div>
+      </div>
+
       {children}
       {/* <Page /> */}
       {/* <Methodology /> */}

@@ -1,4 +1,4 @@
-import { type Post } from "@/posts";
+import { type Post } from "@/lib/posts";
 import Link from "next/link";
 
 export function PostsList({ posts }: { posts: Post[] }) {
