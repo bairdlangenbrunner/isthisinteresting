@@ -1,25 +1,26 @@
+---
+title: "Baby's first post"
+standfirst: "I've put off teaching myself web development and getting smarter about data visualization for years, and for no good reason. I'm trying to change that now."
+author: "Baird Langenbrunner"
+publishDate: "2024-06-12 EDT"
+publish: true
+tags: ['tag1', 'tag2']
+---
+
 export const metadata = {
   title: "Baby's first post",
-  standfirst: "I've put off teaching myself web development and getting smarter about data visualization for years, and for no good reason. I'm trying to change that now.",
+  standfirst:
+    "I've put off teaching myself web development and getting smarter about data visualization for years, and for no good reason. I'm trying to change that now.",
   author: "Baird Langenbrunner",
   publishDate: "2024-06-12 EDT",
-  publish: true
-}
+  publish: true,
+};
 
 import Triangles from "../../components/triangles.tsx";
 import homolosine from "./homolosine-filled-width-height-100.svg";
 import spmFig08 from "./FigSPM-08.jpg";
 import Link from "next/link";
 import Image from "next/image";
-
----
-id: first-post
-title: Baby's first post
-standfirst: I've put off teaching myself web development and getting smarter about data visualization for years, and for no good reason. I'm trying to change that now.
-author: Baird Langenbrunner
-publishDate: 2024-06-12
-publish: true
----
 
 I often wonder if I went into climate science for the graphics.
 
@@ -84,5 +85,3 @@ But I'm trying to change my comfort level with it all. I'll be building out this
 If you've stumbled across this — and I sure as hell wouldn't tell anyone to come here — I hope that you get some enjoyment out of it. And if not, well then, my bad.
 
 <Triangles />
-
-export default ({ children }) => <div className="">{children}</div>;
