@@ -4,3 +4,5 @@ personal blog Next.js site by Baird Langenbrunner
 
 ```npm run dev``` will let you locally host it  
 ```npm build``` > copy/paste the contents in the out folder
+
+see the site [here](https://isthisinteresting.bairdlangenbrunner.com/)
