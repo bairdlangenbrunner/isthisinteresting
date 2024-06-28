@@ -3,7 +3,7 @@ import { Domine, Roboto_Mono, Open_Sans } from "next/font/google";
 import "./globals.css";
 import NavBar from "./components/navbar";
 import Footer from "./components/footer";
-import ArticleHeading from "./components/articleheading";
+// import ArticleHeading from "./components/articleheading";
 
 // font info
 // https://nextjs.org/docs/app/building-your-application/optimizing/fonts

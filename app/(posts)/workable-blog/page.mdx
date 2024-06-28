@@ -1,0 +1,93 @@
+export const postDetails = {
+  title: "After some time, a workable blog?",
+  standfirst:
+    "I made the questionable decision to create this blog with tools that are way above my head. It's slow going, but I think I'm getting the hang of it.",
+  author: "Baird Langenbrunner",
+  publishDate: "2024-06-28",
+  tags: ["tag1", "tag2"],
+};
+
+import PostHeading from "@/app/components/postheading.tsx";
+import Triangles from "@/app/components/triangles.tsx";
+import { Tweet } from "react-tweet";
+
+<PostHeading metadata={postDetails} />
+
+I mentioned in my [first post](https://isthisinteresting.bairdlangenbrunner.com/first-post) a few weeks ago that I've been teaching myself some front-end web development.
+
+Jesus it's been a lot to comprehend.
+
+I'm not afraid to get my hands dirty at the terminal shell. Breaking things and putting them back together is how I like to learn, especially with code and software. But it's easy to forget the hell of error messages in an unfamiliar coding language, or worse, code doing the right things for the wrong reasons, with issues that only experience could pick up on.
+
+<Tweet id="1229060963149602821" />
+
+Because of all this, or in spite of it(?), a few months ago I committed to learning some front-end stuff. And things have gone ok so far. I finished the first few certifications at [freeCodeCamp](https://www.freecodecamp.org/) and got familiar with HTML, CSS, and JavaScript. I've since moved on to [The Odin Project](https://www.theodinproject.com/), where I am now, hacking my way through some of the more complicated front-end resources.
+
+If you've been through this process, you know that once there's some foundational knowledge, a choatic universe opens up — a constellation of JavaScript-derived languages and libraries that are constantly in flux. "Bleeding-edge" is an apt description for my experience so far. It's nuts.
+
+<Triangles />
+
+I built the [initial version](https://github.com/bairdlangenbrunner/isthisinteresting/tree/8a811bfef2f02369ed87985e0a83fefca4461b64) of this blog, including the first post, using React and HTML/JSX. But the time it took to get pages to route properly felt like it was distracting me from getting a "good enough" blog going and making stuff online.
+
+So after reading about Next.js and its more adept routing capabilities, I decided to switch over. It had the kind of mostly-automated structure I wanted for this project. I wanted to build a blog that didn't have a content management system per se, but did do a _little_ bit of that for me. Plus, every webdev nerd out there seems to think this is an important tool to know.
+
+The learning curve was steep for me, but I'm a masochist when it comes to forcing new skills into my brain. And finally, in the past week or so, I feel like I've corraled this into a place that just might be self-sustaining.
+
+### The blog how and why
+
+If you're here looking for a tutorial on how this site is set up, this won't be for you. I think other people have done a nice job of that, and I'm not trying to reinvent the instructional wheel. Still, I always appreciate when others describe their process, so here's a glimpse of mine. Grab the GitHub link in the footer if this is useful to you, but caveat emptor: I'm really not great at this.
+
+I'm using Next.js (app router) and I write these posts in [MDX](https://mdxjs.com/), and I've borrowed heavily from [this tutorial](https://maxleiter.com/blog/build-a-blog-with-nextjs-13) by Max Leiter and [this other tutorial](https://www.alexchantastic.com/building-a-blog-with-next-and-mdx) by Alex Chan. I don't know either of them, but their posts and repositories helped me immeasurably, and they have now reached demigod status for me.
+
+I chose MDX because it lets you write in Markdown _and_ JavaScript (via JSX). It was a bit of a bi**n**ch to set up, and to get it to play nicely with layouts, but we got there eventually.
+
+I've styled this project using [Tailwind](https://tailwindcss.com/). I know that some people think you should code CSS from scratch, and I'm sure I could use the practice, but I think Tailwind has actually _helped_ me learn CSS. That's because I use VS Code, and the Tailwind CSS IntelliSense [extension](https://marketplace.visualstudio.com/items?itemName=bradlc.vscode-tailwindcss) tells you what each utility class does when you hover over it. I also like that it's "mobile-first", which has made the responsive design aspect of things breezy. I'll be using Tailwind **a lot** in future projects.
+
+{" "}
+
+<svg
+  xmlns="http://www.w3.org/2000/svg"
+  fill="none"
+  viewBox="0 0 24 24"
+  stroke-width="1.5"
+  stroke="currentColor"
+  class="size-6 animate-spin display-block mx-auto"
+>
+  <path
+    stroke-linecap="round"
+    stroke-linejoin="round"
+    d="M6 12 3.269 3.125A59.769 59.769 0 0 1 21.485 12 59.768 59.768 0 0 1 3.27 20.875L5.999 12Zm0 0h7.5"
+  />
+</svg>
+
+The layout and design of the content here is pretty deliberate. It stems from a high school obsession with typesetting and page layout, and years of my life working on yearbook staff. I borrowed from the likes of the NYTimes and Washington Post to pick a serif font and font size that is easy to read and [not pure black](https://uxplanet.org/basicdesign-never-use-pure-black-in-typography-36138a3327a6). I also went with margins for paragraph blocks that wouldn't tire the eye, after [reading up](https://ux.stackexchange.com/questions/3618/ideal-column-width-for-paragraphs-online) on some ideal widths.
+
+The fonts are all from Google. The serif this is written in is [Domine](https://fonts.google.com/specimen/Domine), and the monospace titles are in <span class="font-mono">[Roboto Mono](https://fonts.google.com/specimen/Roboto+Mono)</span>.
+
+### The me dot com
+
+You may have arrived here from my [personal website](https://bairdlangenbrunner.com). I built that in React (source code [here](https://github.com/bairdlangenbrunner/bairdlangenbrunner)) and Tailwind, and I'll probably keep it that way for a while, since it's a simple landing page and I'm not trying to do anything complex with it. Like the blog, I use Domine as a serif font, and headings and the footer use <span class="font-sans">[Open Sans](https://fonts.google.com/specimen/Open+Sans)</span>.
+
+I wanted a very simple design with (1) a home page with my name and a striking visual, and (2) an uncluttered navigation bar. I decided to combine two of my favorite things: weird map projections (Goode homolosine) and references to old-school commercial printing and color theory ([CMYK](https://en.wikipedia.org/wiki/CMYK_color_model) for the win; you'll notice the same magenta shows up in links on this site, too.)
+
+<div class="grid grid-cols-4">
+  <div class="bg-[cyan] h-[2rem]"></div>
+  <div class="bg-[magenta] h-[2rem]"></div>
+  <div class="bg-[yellow] h-[2rem]"></div>
+  <div class="bg-[black] h-[2rem]"></div>
+</div>
+
+I know I said this isn't a tutorial, but just to reiterate how simple Tailwind (and MDX) can make things, this is the code that renders the block above, typed directly into this `page.mdx` file:
+
+<div class="code-div">
+  ```
+  <div class="grid grid-cols-4">
+    <div class="bg-[cyan] h-[2rem]"></div>
+    <div class="bg-[magenta] h-[2rem]"></div>
+    <div class="bg-[yellow] h-[2rem]"></div>
+    <div class="bg-[black] h-[2rem]"></div>
+  </div>
+  ```
+</div>
+
+Alright. That's enough for now.

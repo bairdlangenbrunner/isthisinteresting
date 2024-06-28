@@ -1,5 +1,5 @@
 import React from "react";
-import { formatDate } from "@/lib/formatDate";
+import { formatDateNoWeekday } from "@/lib/formatDates";
 import { PostMetadata } from "@/types";
 
 const PostHeading = ({ metadata }: { metadata: PostMetadata }) => {
@@ -10,14 +10,14 @@ const PostHeading = ({ metadata }: { metadata: PostMetadata }) => {
       </div>
 
       <div className="">
-        <h2 className="font-[700] sm:text-[1.125rem] text-base font-serif leading-[1.25rem] sm:leading-[1.5rem]">
+        <h2 className="font-[650] sm:text-[1.125rem] text-base font-serif leading-[1.25rem] sm:leading-[1.5rem] text-stone-600">
           {metadata.standfirst}
         </h2>
       </div>
 
       <div className="flex justify-between">
-        <div className="text-xs">{formatDate(metadata.publishDate)}</div>
-        <div className="text-xs">by {metadata.author}</div>
+        <div className="text-xs text-stone-600">{formatDateNoWeekday(metadata.publishDate)}</div>
+        <div className="text-xs text-stone-600">by {metadata.author}</div>
       </div>
     </div>
   );

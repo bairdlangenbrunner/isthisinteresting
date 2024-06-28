@@ -1,7 +1,7 @@
 import React from "react";
 import Link from "next/link";
 import { getPosts } from "@/lib/posts";
-import { formatDate } from "@/lib/formatDate";
+import { formatDate } from "@/lib/formatDates";
 
 export default async function ArchivePage() {
 
