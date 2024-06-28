@@ -1,8 +1,8 @@
-type BlogPost = {
-  id: string,
-  title: string,
-  standfirst: string,
-  publishDate: string,
-  author: string
-  publish: boolean,
+export interface PostMetadata {
+  slug: string;
+  title: string;
+  publishDate: string;
+  tags: string[];
+  author: string;
+  standfirst: string;
 }

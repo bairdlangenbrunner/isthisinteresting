@@ -1,28 +1,40 @@
 import React from "react";
-import { getPosts } from "@/posts";
 import Link from "next/link";
+import { getPosts } from "@/lib/posts";
+import { formatDate } from "@/lib/formatDates";
 
-export default async function Archive() {
-  
+export default async function ArchivePage() {
+
   const posts = await getPosts();
+  // console.log(posts)
 
   return (
     <>
-      <h1 className="text-7xl">archive</h1>
-      {/* <PostsList posts={posts}  /> */}
-      <ol>
-        {posts.map(({ slug, title, publishDate }) => (
-          <li key={slug}>
-            <h2>
-              <Link href={`/${slug}`}>{title}</Link>
-            </h2>
-            <p>
-              <strong>Published:</strong>{" "}
-              {new Date(publishDate).toLocaleDateString()}{" "}
-            </p>
-          </li>
-        ))}
-      </ol>
+      <div className="paragraph-widths mx-auto">
+        <div className="my-[2em] sm:my-[3em]">
+          <h1 className="text-7xl">archive</h1>
+          <div>most recent up top</div>
+        </div>
+
+        {/* <PostsList posts={posts}  /> */}
+        <div>
+          <ol>
+            {posts.map(({ slug, title, publishDate, author, standfirst }) => (
+              <li
+                key={slug}
+                className="my-[15px] sm:my-[30px] text-base sm:text-xl"
+              >
+                <Link href={`/${slug}`} className="font-bold">
+                  {title}
+                </Link>
+                <div className="text-sm sm:text-base">
+                  {formatDate(publishDate)}
+                </div>
+              </li>
+            ))}
+          </ol>
+        </div>
+      </div>
     </>
   );
 }

@@ -78,10 +78,27 @@
     @apply text-[1.5rem];
   }
 
-  figcaption {
-    @apply text-neutral-500;
-    @apply text-xs;
-    @apply mt-[0.75rem];
-    @apply font-monospace;
+  h4 {
+    @apply font-[700];
+    @apply mt-[2rem];
+    @apply mb-[1.5rem];
+    @apply text-[1.25rem];
   }
+
+  figcaption > * {
+    @apply mt-[0.75rem];
+    @apply text-neutral-500;
+    @apply font-mono;
+    @apply text-xs;
+  }
+
+  .code-div {
+    @apply bg-stone-100;
+    @apply p-[1rem];
+    @apply rounded-lg;
+    @apply paragraph-widths;
+    @apply mx-auto;
+    overflow: scroll;
+  }
+
 }

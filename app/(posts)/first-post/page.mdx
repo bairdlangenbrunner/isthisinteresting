@@ -1,25 +1,20 @@
-export const metadata = {
+export const postDetails = {
   title: "Baby's first post",
-  standfirst: "I've put off teaching myself web development and getting smarter about data visualization for years, and for no good reason. I'm trying to change that now.",
+  standfirst:
+    "I've put off teaching myself web development and getting smarter about data visualization for years, and for no good reason. I'm trying to change that now.",
   author: "Baird Langenbrunner",
-  publishDate: "2024-06-12 EDT",
-  publish: true
-}
+  publishDate: "2024-06-12",
+  tags: ["tag1", "tag2"],
+};
 
-import Triangles from "../../components/triangles.tsx";
+import Triangles from "@/app/components/triangles.tsx";
+import PostHeading from "@/app/components/postheading.tsx"
 import homolosine from "./homolosine-filled-width-height-100.svg";
 import spmFig08 from "./FigSPM-08.jpg";
 import Link from "next/link";
 import Image from "next/image";
 
----
-id: first-post
-title: Baby's first post
-standfirst: I've put off teaching myself web development and getting smarter about data visualization for years, and for no good reason. I'm trying to change that now.
-author: Baird Langenbrunner
-publishDate: 2024-06-12
-publish: true
----
+<PostHeading metadata={postDetails} />
 
 I often wonder if I went into climate science for the graphics.
 
@@ -63,11 +58,13 @@ IPCC reports. [AR5](https://www.ipcc.ch/assessment-report/ar5/), for example, wa
     Policymakers](https://www.ipcc.ch/report/ar5/wg1/summary-for-policymakers/),
     showing low- and high-emissions climate trajectories for temperature,
     precipitation, sea ice extent, and ocean surface pH. This was one of the
-    first times the Robinson projection was used in a report like this.
+    first times the Robinson projection and smarter graphics were used in a report like this.
   </figcaption>
 </figure>
 
-Those graphics still have a long way to go to be accessible to the general public, I think, and to be readable on cell phones... but that's not ultimately why they're being created.
+Little by little, map projections and color schemes like these have trickled into academic publications and conference presentations. It's been a great thing to witness, and I remember holding high standards for figures when I worked as an academic editor myself, regularly asking authors to modify things to make them more accessible, and to read up on why this is important.
+
+These IPCC-style graphics still have a long way to go to be accessible to the general public, I think, and to be readable on cell phones... but that's not ultimately why they're being created.
 
 ### But I'd like to be
 
@@ -84,5 +81,3 @@ But I'm trying to change my comfort level with it all. I'll be building out this
 If you've stumbled across this — and I sure as hell wouldn't tell anyone to come here — I hope that you get some enjoyment out of it. And if not, well then, my bad.
 
 <Triangles />
-
-export default ({ children }) => <div className="">{children}</div>;
