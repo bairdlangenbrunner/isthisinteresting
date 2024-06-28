@@ -26,7 +26,8 @@ const nextConfig = {
   experimental: {
   },
   images: {
-    domains: ['github.com', 'lh3googleusercontent.com']
+    domains: ['github.com', 'lh3googleusercontent.com'],
+    unoptimized: true
   }
 }
 
