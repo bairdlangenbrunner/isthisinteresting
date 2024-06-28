@@ -6,7 +6,7 @@ import { formatDate } from "@/lib/formatDate";
 export default async function ArchivePage() {
 
   const posts = await getPosts();
-  console.log(posts)
+  // console.log(posts)
 
   return (
     <>

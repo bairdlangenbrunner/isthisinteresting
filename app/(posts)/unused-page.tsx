@@ -1,44 +1,44 @@
-// import getFormattedDate from "@/lib/getFormattedDate";
-// // import { getSortedPostsData, getPostData } from "@/lib/posts"
-// import { getPosts, getPostById } from "@/lib/posts";
-// // import { notFound } from "next/navigation";
-// // import Link from "next/link";
+"use client";
 
-// export function generateStaticParams() {
-//   const posts = getPosts();
-//   return posts.map((post) => {
-//     postId: post.id;
-//   });
-// }
+import React, { useContext } from "react";
+// import Container from "./Container";
+import { PostMetadata } from "@/types";
+import { useRouter } from "next/navigation";
+// import { AppContext } from "@/app/providers";
+// import { BsArrowLeftCircle } from "react-icons/bs";
+import { formatDate } from "@/lib/formatDate";
+// import { Prose } from "./Prose";
 
-// export function generateMetadata({ params }: { params: { postId: string } }) {
-//   const posts = getPosts();
-//   const { postId } = params;
+const PostLayout = ({
+  post,
+  children,
+}: {
+  post: PostMetadata;
+  children: React.ReactNode;
+}) => {
+  let router = useRouter();
+  // let {previousPathname} = useContext(AppContext);
+  return (
+    <>
+      <div className="flex flex-col p-[15px] gap-[15px] my-[1.25rem] sm:my-[1.75rem] bg-[rgb(255,0,255,0.05)] rounded-lg paragraph-widths mx-auto">
+        <div>
+          <h1 className="font-[900] text-3xl sm:text-4xl">{post.title}</h1>
+        </div>
+        <div>
+          <h2 className="font-[700] sm:text-[1.125rem] text-base font-serif leading-[1.25rem] sm:leading-[1.5rem]">
+            {post.standfirst}
+          </h2>
+        </div>
+        <div className="flex justify-between">
+          <div className="text-xs">{formatDate(post.publishDate)}</div>
+          <div className="text-xs">by {post.author}</div>
+        </div>
+      </div>
 
-//   const post = posts.find((post) => post.id === postId);
+      {/* <MDXRemote {...mdxSource} /> */}
+      {children}
+    </>
+  );
+};
 
-//   if (!post) {
-//     return {
-//       title: "post not found",
-//     };
-//   }
-
-//   return {
-//     title: post.title,
-//   };
-// }
-
-// export default async function Post({ params }: { params: { postId: string } }) {
-//   const posts = getPosts();
-//   const { postId } = params;
-
-//   if (!(await posts).find((post) => post.id === postId)) {
-//     throw new Error("error, no post");
-//   }
-
-//   const { title, publishDate, author, standfirst, content } = await getPostById(
-//     postId
-//   );
-// }
-
-
+export default PostLayout;

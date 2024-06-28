@@ -1,29 +1,38 @@
-// // app/(posts)/[slug]/page.tsx
-// import { getPostBySlug } from "@/lib/posts";
-// import { PostMetadata } from "@/types";
-// import PostContent from "../components/postlayout";
-// import { MDXRemoteSerializeResult } from "next-mdx-remote";
-// import { serialize } from "next-mdx-remote/serialize";
-// import { notFound } from "next/navigation";
-// import React from "react";
+import React from "react";
+import { PostMetadata } from "@/types";
+import { formatDate } from "@/lib/formatDate";
+import { MDXRemote } from "next-mdx-remote";
 
-// export default async function PostLayout({params,}: {params: { slug: string };}) {
-//   if (!params.slug) {
-//     throw new Error("No slug provided in params.");
-//   }
+const PostPage = ({
+  post,
+  children,
+}: {
+  post: PostMetadata;
+  children: React.ReactNode;
+}) => {
+  // let router = useRouter();
+  // let {previousPathname} = useContext(AppContext);
+  return (
+    <>
+      <div className="flex flex-col p-[15px] gap-[15px] my-[1.25rem] sm:my-[1.75rem] bg-[rgb(255,0,255,0.05)] rounded-lg paragraph-widths mx-auto">
+        <div>
+          <h1 className="font-[900] text-3xl sm:text-4xl">{post.title}</h1>
+        </div>
+        <div>
+          <h2 className="font-[700] sm:text-[1.125rem] text-base font-serif leading-[1.25rem] sm:leading-[1.5rem]">
+            {post.standfirst}
+          </h2>
+        </div>
+        <div className="flex justify-between">
+          <div className="text-xs">{formatDate(post.publishDate)}</div>
+          <div className="text-xs">by {post.author}</div>
+        </div>
+      </div>
 
-//   const post = await getPostBySlug(params.slug);
+      {/* <MDXRemote {...mdxSource} /> */}
+      {children}
+    </>
+  );
+};
 
-//   if (!post) {
-//     notFound();
-//     return null;
-//   }
-
-//   const mdxSource: MDXRemoteSerializeResult = await serialize(post.content);
-
-//   return (
-//     // <PostContent postMetadata={post} mdxSource={mdxSource}>
-//       // {params.slug}
-//     {/* </PostContent> */}
-//   );
-// }
+export default PostPage;

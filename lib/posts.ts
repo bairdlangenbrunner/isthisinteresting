@@ -1,14 +1,5 @@
 import { readdir } from "fs/promises";
-
-export interface PostMetadata {
-  slug: string;
-  title: string;
-  publishDate: string;
-  tags: string[];
-  author: string;
-  standfirst: string;
-  // id: string;
-}
+import { PostMetadata } from "@/types";
 
 export async function getPosts(): Promise<PostMetadata[]> {
   // get all the slugs from the (posts) folder

@@ -7,11 +7,14 @@ export const postDetails = {
   tags: ["tag1", "tag2"],
 };
 
-import Triangles from "../../components/triangles.tsx";
+import Triangles from "@/app/components/triangles.tsx";
+import PostHeading from "@/app/components/postheading.tsx"
 import homolosine from "./homolosine-filled-width-height-100.svg";
 import spmFig08 from "./FigSPM-08.jpg";
 import Link from "next/link";
 import Image from "next/image";
+
+<PostHeading metadata={postDetails} />
 
 I often wonder if I went into climate science for the graphics.
 
