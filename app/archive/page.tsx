@@ -1,16 +1,12 @@
 import React from "react";
-import { getPosts } from "@/lib/posts";
 import Link from "next/link";
+import { getPosts } from "@/lib/posts";
+import { formatDate } from "@/lib/formatDate";
 
-export default async function Archive() {
+export default async function ArchivePage() {
+
   const posts = await getPosts();
-  const dateOptions = {
-    timeZone: "America/New_York",
-    weekday: "long",
-    year: "numeric",
-    month: "long",
-    day: "numeric",
-  };
+  console.log(posts)
 
   return (
     <>
@@ -32,12 +28,8 @@ export default async function Archive() {
                   {title}
                 </Link>
                 <div className="text-sm sm:text-base">
-                  {new Date(publishDate).toLocaleDateString(
-                    "en-US",
-                    dateOptions
-                  )}
+                  {formatDate(publishDate)}
                 </div>
-                {/* <div className="font-serif">{standfirst}</div> */}
               </li>
             ))}
           </ol>
