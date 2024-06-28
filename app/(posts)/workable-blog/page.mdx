@@ -49,37 +49,37 @@ I've styled this project using [Tailwind](https://tailwindcss.com/). I know that
   xmlns="http://www.w3.org/2000/svg"
   fill="none"
   viewBox="0 0 24 24"
-  stroke-width="1.5"
+  strokeWidth="1.5"
   stroke="currentColor"
-  class="size-6 animate-spin display-block mx-auto"
+  className="size-6 animate-spin display-block mx-auto"
 >
   <path
-    stroke-linecap="round"
-    stroke-linejoin="round"
+    strokeLinecap="round"
+    strokeLinejoin="round"
     d="M6 12 3.269 3.125A59.769 59.769 0 0 1 21.485 12 59.768 59.768 0 0 1 3.27 20.875L5.999 12Zm0 0h7.5"
   />
 </svg>
 
 The layout and design of the content here is pretty deliberate. It stems from a high school obsession with typesetting and page layout, and years of my life working on yearbook staff. I borrowed from the likes of the NYTimes and Washington Post to pick a serif font and font size that is easy to read and [not pure black](https://uxplanet.org/basicdesign-never-use-pure-black-in-typography-36138a3327a6). I also went with margins for paragraph blocks that wouldn't tire the eye, after [reading up](https://ux.stackexchange.com/questions/3618/ideal-column-width-for-paragraphs-online) on some ideal widths.
 
-The fonts are all from Google. The serif this is written in is [Domine](https://fonts.google.com/specimen/Domine), and the monospace titles are in <span class="font-mono">[Roboto Mono](https://fonts.google.com/specimen/Roboto+Mono)</span>.
+The fonts are all from Google. The serif this is written in is [Domine](https://fonts.google.com/specimen/Domine), and the monospace titles are in <span className="font-mono">[Roboto Mono](https://fonts.google.com/specimen/Roboto+Mono)</span>.
 
 ### The me dot com
 
-You may have arrived here from my [personal website](https://bairdlangenbrunner.com). I built that in React (source code [here](https://github.com/bairdlangenbrunner/bairdlangenbrunner)) and Tailwind, and I'll probably keep it that way for a while, since it's a simple landing page and I'm not trying to do anything complex with it. Like the blog, I use Domine as a serif font, and headings and the footer use <span class="font-sans">[Open Sans](https://fonts.google.com/specimen/Open+Sans)</span>.
+You may have arrived here from my [personal website](https://bairdlangenbrunner.com). I built that in React (source code [here](https://github.com/bairdlangenbrunner/bairdlangenbrunner)) and Tailwind, and I'll probably keep it that way for a while, since it's a simple landing page and I'm not trying to do anything complex with it. Like the blog, I use Domine as a serif font, and headings and the footer use <span className="font-sans">[Open Sans](https://fonts.google.com/specimen/Open+Sans)</span>.
 
 I wanted a very simple design with (1) a home page with my name and a striking visual, and (2) an uncluttered navigation bar. I decided to combine two of my favorite things: weird map projections (Goode homolosine) and references to old-school commercial printing and color theory ([CMYK](https://en.wikipedia.org/wiki/CMYK_color_model) for the win; you'll notice the same magenta shows up in links on this site, too.)
 
-<div class="grid grid-cols-4">
-  <div class="bg-[cyan] h-[2rem]"></div>
-  <div class="bg-[magenta] h-[2rem]"></div>
-  <div class="bg-[yellow] h-[2rem]"></div>
-  <div class="bg-[black] h-[2rem]"></div>
+<div className="grid grid-cols-4">
+  <div className="bg-[cyan] h-[2rem]"></div>
+  <div className="bg-[magenta] h-[2rem]"></div>
+  <div className="bg-[yellow] h-[2rem]"></div>
+  <div className="bg-[black] h-[2rem]"></div>
 </div>
 
 I know I said this isn't a tutorial, but just to reiterate how simple Tailwind (and MDX) can make things, this is the code that renders the block above, typed directly into this `page.mdx` file:
 
-<div class="code-div">
+<div className="code-div">
   ```
   <div class="grid grid-cols-4">
     <div class="bg-[cyan] h-[2rem]"></div>

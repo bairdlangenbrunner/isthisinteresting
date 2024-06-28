@@ -93,7 +93,7 @@
   }
 
   .code-div {
-    @apply bg-stone-200;
+    @apply bg-stone-100;
     @apply p-[1rem];
     @apply rounded-lg;
     @apply paragraph-widths;
