@@ -2,16 +2,18 @@
 
 import { readdir } from "fs/promises";
 
-export interface Post {
-  slug: string;
-  title: string;
-  standfirst: string;
-  author: string;
-  publishDate: string;
-  publish: boolean;
-}
+// export interface Post {
+//   slug: string;
+//   title: string;
+//   standfirst: string;
+//   author: string;
+//   publishDate: string;
+//   publish: boolean;
+// }
 
-export async function getPosts(): Promise<Post[]> {
+import { PostMetadata } from "./types";
+
+export async function getPosts(): Promise<PostMetadata[]> {
   // retreive slugs from post routes
   const slugs = (
     await readdir("./app/(posts)", { withFileTypes: true })
