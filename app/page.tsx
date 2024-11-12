@@ -5,14 +5,13 @@ import { formatDate } from "@/lib/formatDates";
 
 export default async function Home() {
   const posts = await getPosts();
-  // const firstPost = array(posts[0]);
 
   return (
     // h-full must be passed to main and to div
     <main className="h-full">
       <div className="flex flex-col navbar-footer-widths mx-auto h-full">
         <div className="flex flex-col flex-grow justify-center">
-          <h1 className="sm:text-6xl text-5xl text-right font-[900] font-monospace">
+          <h1 className="sm:text-6xl text-5xl text-right font-[900]">
             is this
             <br />
             interesting
@@ -28,20 +27,20 @@ export default async function Home() {
           {/* post <Link href="/first-post">here</Link> */}
           {/* </div> */}
           <div>
-            <div className="text-base sm:text-xl font-monospace text-stone-500">
+            <div className="text-sm sm:text-base text-stone-400 mb-[1rem]">
               latest post:
             </div>
             <ol>
               {posts[0] && (
-                <li
-                  key={posts[0].slug}
-                  className="my-[15px] sm:my-[30px] text-base sm:text-xl"
-                >
+                <li key={posts[0].slug} className="text-base sm:text-xl">
                   <Link href={`/${posts[0].slug}`} className="font-bold">
                     {posts[0].title}
                   </Link>
                   <div className="text-sm sm:text-base">
                     {formatDate(posts[0].publishDate)}
+                  </div>
+                  <div className="text-sm sm:text-base text-stone-400">
+                    by {posts[0].author}
                   </div>
                 </li>
               )}
