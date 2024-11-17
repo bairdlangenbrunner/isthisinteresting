@@ -1,0 +1,56 @@
+export const postDetails = {
+  title: "Setting up this site",
+  standfirst:
+    "I finally forced myself to set this site up in a more thoughtful and dynmic way. I'm using a virtual private server (VPS) and some tools to make it work. Now I feel like I can go nuts with it.",
+  author: "Baird Langenbrunner",
+  publishDate: "2024-11-17",
+  tags: ["tag1", "tag2"],
+};
+
+{/* published on WEEKDAY, MONTH DAY around TIME */}
+
+import PostHeading from "@/app/components/postheading.tsx";
+
+<PostHeading metadata={postDetails} />
+
+I wish there were just one way to do something.
+
+Well, that's an insane thing to say generally; variety is what keeps me engaged. But I do wish this were true for building a website.
+
+I've struggled to get this blog and a more DIY personal website off the ground this year. There were some personal life obstacles hindering this, but also, unless you've done it before, it's just plain hard to do. And there are a million ways to do it. And none of them seems to be the best.
+
+It's also easy to forget how much of a struggle something like this is at first, once you figure it all out, and you soon forget all the false starts and rabbit holes you go down. So here's documentation of how I've built up this site so far, so that it helps future me, and potentially you too.
+
+Of course, this is simply the random walk that worked for me, and it may change in the future. This is probably not an interesting thing to read unless you came here looking for more tutorial-oriented web dev stuff.
+
+The main steps are described at length below, with useful code where necessary.
+
+1. Build your site or app locally (e.g., via React or Next.js)
+2. Get a domain (I use Hostinger)
+3. 
+
+### Build your site locally
+
+I built my personal website using React, and this blog is built separately using Next.js and lives in a subdomain. I wrote a bit more on the add-on tools I use to make these things (Tailwind CSS; MDX) in my [second blog post](https://isthisinteresting.bairdlangenbrunner.com/002-workable-blog).
+
+I built them in the classic way that tutorials teach you, and I learned how to run them in a development environment on my own computer (using ```npm run dev```). The problem is that running the development version is pretty straightforward, but transferring the built website to a domain somewhere, and having the same results, is a whole other thing.
+
+Nota bene: when I say website, I mean "app", because that's the parlance that web developers use. It feels silly to call this site/blog an app, because they're essentially dressed-up static websites. It feels like using a sports car to grab a sandwich at the corner store: you can use it for the job, but it's way overqualified for the job.
+
+That being said, I've tried to build these to *have* dynamic web app capabilities, so that I can eventually do create fancier stuff, and that's the story I'm telling here.
+
+### Get a domain (and subdomain)
+
+### First attempt: static site
+
+### Second attempt: dynamic, VPS-hosted site
+
+### Configuring the Hostinger VPS
+
+```
+this is a code block
+```
+
+<br/>
+<br/>
+<br/>

@@ -38,17 +38,17 @@
 
   .navbar-footer-widths {
     @apply max-w-[90%];
-    @apply md:max-w-[700px];
+    @apply md:max-w-[42rem];
   }
 
   .paragraph-widths {
     @apply w-[90%];
-    @apply sm:w-[600px];
+    @apply md:w-[42rem];
   }
 
   .image-widths {
     @apply w-[100%];
-    @apply sm:w-[600px];
+    @apply md:w-[42rem];
   }
 
   a {
@@ -84,6 +84,10 @@
     @apply mb-[1.5rem];
     @apply text-[1.25rem];
   }
+
+  /* ol, ul {
+    @apply paragraph-widths;
+  } */
 
   figcaption > * {
     @apply mt-[0.75rem];

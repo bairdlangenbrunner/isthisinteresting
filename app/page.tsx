@@ -3,6 +3,8 @@ import Link from "next/link";
 import { getPosts } from "@/lib/posts";
 import { formatDate } from "@/lib/formatDates";
 
+// this is the homepage
+
 export default async function Home() {
   const posts = await getPosts();
 
