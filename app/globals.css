@@ -21,12 +21,13 @@
   } */
 
   p {
-    @apply font-serif;
+    @apply md:leading-[1.666rem];
     @apply leading-[1.333rem];
-    @apply sm:leading-[1.666rem];
-    @apply sm:text-[1.125rem];
+    @apply md:text-[1.125rem];
+    @apply md:my-[1.25rem];
     @apply my-[1rem];
-    @apply sm:my-[1.25rem];
+    @apply font-serif;
+    
   }
 
   /* p,
@@ -38,17 +39,17 @@
 
   .navbar-footer-widths {
     @apply max-w-[90%];
-    @apply md:max-w-[42rem];
+    @apply md:max-w-[40rem];
   }
 
   .paragraph-widths {
     @apply w-[90%];
-    @apply md:w-[42rem];
+    @apply md:w-[40rem];
   }
 
   .image-widths {
     @apply w-[100%];
-    @apply md:w-[42rem];
+    @apply sm:w-[30rem];
   }
 
   a {
@@ -65,10 +66,10 @@
   h2 {
     @apply font-[700];
     @apply text-base;
-    @apply sm:text-[1.125rem];
+    @apply md:text-[1.125rem];
     @apply font-serif;
     @apply leading-[1.25rem];
-    @apply sm:leading-[1.5rem];
+    @apply md:leading-[1.5rem];
   }
 
   h3 {
