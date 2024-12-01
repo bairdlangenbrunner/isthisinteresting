@@ -18,7 +18,8 @@
     "next-mdx-remote": "^5.0.0",
     "react": "^18",
     "react-dom": "^18",
-    "react-tweet": "^3.2.1"
+    "react-tweet": "^3.2.1",
+    "sharp": "^0.33.5"
   },
   "devDependencies": {
     "@types/mdx": "^2.0.13",
