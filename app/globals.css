@@ -22,11 +22,12 @@
 
   p {
     @apply font-serif;
+    @apply text-[1rem];
     @apply leading-[1.333rem];
-    @apply sm:leading-[1.666rem];
-    @apply sm:text-[1.125rem];
     @apply my-[1rem];
-    @apply sm:my-[1.25rem];
+    @apply md:text-[1.125rem];
+    @apply md:leading-[1.6rem];
+    @apply md:my-[1.25rem];
   }
 
   /* p,
@@ -38,17 +39,17 @@
 
   .navbar-footer-widths {
     @apply max-w-[90%];
-    @apply md:max-w-[700px];
+    @apply md:max-w-[40rem];
   }
 
   .paragraph-widths {
     @apply w-[90%];
-    @apply sm:w-[600px];
+    @apply md:w-[40rem];
   }
 
   .image-widths {
     @apply w-[100%];
-    @apply sm:w-[600px];
+    @apply sm:w-[30rem];
   }
 
   a {
@@ -65,10 +66,10 @@
   h2 {
     @apply font-[700];
     @apply text-base;
-    @apply sm:text-[1.125rem];
+    @apply md:text-[1.125rem];
     @apply font-serif;
     @apply leading-[1.25rem];
-    @apply sm:leading-[1.5rem];
+    @apply md:leading-[1.5rem];
   }
 
   h3 {
@@ -84,6 +85,10 @@
     @apply mb-[1.5rem];
     @apply text-[1.25rem];
   }
+
+  /* ol, ul {
+    @apply paragraph-widths;
+  } */
 
   figcaption > * {
     @apply mt-[0.75rem];

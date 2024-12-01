@@ -12,7 +12,7 @@ const links = [
 const NavLinks = () => {
   const pathname = usePathname();
   return (
-    <div className="flex justify-between text-sm sm:text-lg">
+    <div className="flex justify-between text-sm md:text-lg">
       {/* is this interesting div */}
       <div>
         <Link key="is this interesting" href="/" className="">
