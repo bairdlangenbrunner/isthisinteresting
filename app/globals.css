@@ -21,13 +21,13 @@
   } */
 
   p {
-    @apply md:leading-[1.666rem];
-    @apply leading-[1.333rem];
-    @apply md:text-[1.125rem];
-    @apply md:my-[1.25rem];
-    @apply my-[1rem];
     @apply font-serif;
-    
+    @apply text-[1rem];
+    @apply leading-[1.333rem];
+    @apply my-[1rem];
+    @apply md:text-[1.125rem];
+    @apply md:leading-[1.6rem];
+    @apply md:my-[1.25rem];
   }
 
   /* p,
