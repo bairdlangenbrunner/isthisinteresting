@@ -25,9 +25,11 @@
     @apply text-[1rem];
     @apply leading-[1.333rem];
     @apply my-[1rem];
-    @apply md:text-[1.125rem];
-    @apply md:leading-[1.6rem];
-    @apply md:my-[1.25rem];
+    /* @apply sm:text-[1.125rem]; */
+    /* @apply sm:leading-[1.6rem]; */
+    @apply sm:text-[1.0625rem];
+    @apply sm:leading-[1.5rem];
+    @apply sm:my-[1.25rem];
   }
 
   /* p,
@@ -39,12 +41,12 @@
 
   .navbar-footer-widths {
     @apply max-w-[90%];
-    @apply md:max-w-[40rem];
+    @apply sm:max-w-[40rem];
   }
 
   .paragraph-widths {
     @apply w-[90%];
-    @apply md:w-[40rem];
+    @apply sm:w-[40rem];
   }
 
   .image-widths {
@@ -66,10 +68,10 @@
   h2 {
     @apply font-[700];
     @apply text-base;
-    @apply md:text-[1.125rem];
+    @apply sm:text-[1.125rem];
     @apply font-serif;
     @apply leading-[1.25rem];
-    @apply md:leading-[1.5rem];
+    @apply sm:leading-[1.5rem];
   }
 
   h3 {

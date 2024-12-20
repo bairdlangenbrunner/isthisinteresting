@@ -1,0 +1,145 @@
+export const postDetails = {
+  title: "Pattern seeking",
+  standfirst:
+    "I spend a lot of time looking for patterns in things. It can make the world a lot more interesting, and I can get really lost in the clouds. But I've learned that sometimes, I should cool it.",
+  author: "Baird Langenbrunner",
+  publishDate: "2024-12-12",
+  tags: ["science", "explainer", "personal"],
+};
+
+{/* published on WEEKDAY, MONTH DAY around TIME */}
+
+import PostHeading from "@/app/components/postheading.tsx";
+
+<PostHeading metadata={postDetails} />
+
+My second-greatest love in life is a good explanation.
+
+Think about it. A good explanation is chewy and satisfying; it's a meal that feeds you time and again. Whenever a phenomenon reoccurs, or you return to a memory, you can come back to the table and founder yourself on the clarity of the why and how. It's why I got into science in the first place — this compulsion to understand the world.
+
+And my greatest love?
+
+So far, I think it's the sky. I'm convinced there are infinitely many interesting things to observe there, and just as many explanations behind them. Put me in front of some clouds, a sunset, or even a completely clear day, and I'll make you regret it.
+
+<span className="flex justify-center text-[1.5em]">🌧️ 🌧️ 🌧️</span>
+
+What really does it for me, though, is how the sky toes the line so perfectly between the human and the divine. On one hand, it's an ineffable presence — unconstrained in its shape and beauty — and it feels wrong to try to describe its behavior with words, or worse, math. On the other hand, it's fun to do that. It follows basic physics. Its order and chaos are predictable in their own right, and it lends itself perfectly to a hell-bent search for explanations.
+
+{/* And these, to me, are all about patterns. */}
+
+Let me try to explain.
+
+### Laws of nature
+
+Ok, I exaggerated. The atmosphere doesn't follow "basic" physics — I think of it as answering to a higher power.
+
+To wrangle the atmosphere onto a chalkboard, your basic building blocks are those things Newton said about forces and gravity, and that trusty calculus he invented. But you also borrow the ideal gas law from chemistry, which gets fractally complicated when you look closely enough and start blowing things around. And once you put all this together, it becomes something else entirely, with its own name and field — fluid dynamics.
+
+See, that's the thing that still gets me a little every time I think about it: the sky, or more specifically the air it holds, is a fluid. (You may remember from chemistry class that a fluid is a liquid or gas. Air is by and large the latter.)
+
+I think of the atmosphere as a huge bathtub of water, constantly mixing and sloshing and stirring, responding to gravity and heat being applied at different places.
+
+But it's a weird bathtub. The sun warms it from the top and, by heating the ground, from the bottom. The fluid in it doesn't have a defined layer; it compresses and expands, and the amount of gas molecules drops off quickly as you climb toward the top, making the air much thinner, for example, at the top of a mountain. The floor of this bathtub is a lot of different stuff, too — grass, desert, ocean, cities — each of which interacts distinctly with what's above it.
+
+And while air spends most of its time being invisible to us, it's incredibly active behind the scenes.
+
+<span className="flex justify-center text-[1.5em]">🌧️ 🌧️ 🌧️</span>
+
+Just what *is* the atmosphere made of? Let's spend a minute on that. And trust me — I'm getting somewhere with this. [THIS IS ALONE ON ITS OWN]
+
+[fig1 takes up full screen]
+[scrolly, go to top and stop, with figure below filling up full screen]
+
+[figure of atmospheric composition]  
+[1. start with a big blue bar, with ombre blue to white like sky, text next to it says "the atmosphere" (surface at bottom, say 30km on top, with asterisk at bottom say: technically, the troposphere)]  
+[2. as you scroll up, it changes to a stacked bar chart]
+
+scrolly: The air we breathe is about 78% nitrogen and another 21% oxygen, by volume. Each of these is a diatomic gas, two atoms of either N or O stuck together.
+
+scrolly: That means that every breath we take has about one oxygen molecule for every four nitrogen molecules.
+
+scrolly: Argon, a noble gas that doesn't really react with anything else, makes up another 0.93%.
+
+[the smallest 1% of the figure lights up]
+
+scrolly: The rest of the gases we know and love — carbon dioxide, methane, ozone, water vapor, and some others — together make up the remaining 0.4%.
+
+scrolly: Each of these is important in some way, and their amounts vary with height.
+
+scrolly: For example, ozone — which is three oxygen atoms bonded together — is most prevalent at around 30 kilometers altitude, where it absorbs harmful solar rays and spares our weak skin from ultraviolet light.
+
+scrolly: Ozone at ground level, on the other hand, is in far smaller concentrations. And that's a good thing: it's poisonous to humans, and we do everything we can to avoid it.
+
+scrolly: But the real queen of all this is water vapor, the gaseous form of H<sub>2</sub>O.
+
+scrolly: Its relative presence in the atmosphere varies quite a bit. On average, it's around 0.4% of air by volume, but that can range from 0% over cold polar regions to 4% in a tropical rainforest canopy.
+
+scrolly: The amount of water vapor actually varies a ton in both the horizontal and vertical directions in the atmosphere. It's extremely dry where planes fly, just above the cloud level, where denser air with more water vapor lives.
+
+### Water, water everywhere
+
+I find it really fascinating that water vapor, with its measly 0–4% presence in the atmosphere, plays such an outsized role in our lives.
+
+And why does it vary from 0% to 4%? Think about deserts versus rain forests: the amount of water vapor in each is quite different.
+
+[global map of "precipitable water"? showing areas that are more or less dry? and maybe an atmospheric column of the same?]
+
+[discuss air with water vapor in it, and air without water vapor in it. dry air is technically heavier!]
+
+[discuss this difference in density]
+
+[density, and bouyancy, drive weather]
+
+And the differences in density produce probably my favorite cloud type: the Kelvin-Helmholtz wave.
+
+[grid of KH waves from online pictures]
+
+### Kelvin-Helmholtz waves
+
+Take a look at those clouds. Aren't they insane? And beautiful? Don't you feel like you're tripping? Wait, *are* you tripping?
+
+{/* If they look like perfect little emoji ocean waves, it's for a good reason: they basically are. And here is where I'll try to bring it home. */}
+
+What's even cooler is that you can explain what's going on here, and it boils down to how dense the air in the cloud is, and how dense the air just above it is. Or really, what matters is that they have slightly *different* densities, mainly due to the amount of water vapor contained in each.
+
+Imagine this. You have two fluids layered on top of each other, like equal amounts of oil and water. The water is at the bottom because it's denser than oil. The oil floats on top because it's more bouyant. This density-driven separation is everywhere: in an oil and vinegar salad dressing; in your iced coffee when you pour heavy milk into it; a lava lamp.
+
+If you could create this kind of oil and water layer at the scale of a typical cumulus cloud (a few kilometers wide), and you moved one of the layers slightly faster than the other, you'd start to get little, tiny perturbations at their boundary — ripples that, thanks to how physics and fluids work, manifest as waves.
+
+And you actually can set this up, at least in a very simple way on a computer. The things to know are this. First, the lighter fluid below is less dense, like a cloud, and the darker fluid is less dense, like the air above it. Second, we're giving one of these layers a really slight, consistent nudge. Think of it like a gentle breeze blowing. Third, in this simulation, these are both liquids, rather than gases, but remember — they're both fluids, and the basic physics are quite similar.
+
+These perturbations, if speeds are moving slowly enough, and the density differences are just right, would start to grow. In math, when little perturbations grow, it's called an "instability". And in this case, the waves are the manifestation of it; they grow so big that they can't hold themselves, and they start to crash, kind of like ocean waves on the shore.
+
+(For what it's worth, ocean waves are a different thing. They're driven by gravity and instabilities that arise when waves get cramped as they approach a shore and are forced into shallower water. But gravity is present in both cases, and the way the waves grow, and crest, and curl over, and crash? It's all kind of the same.)
+
+This "instability"
+
+And this is where I tend to find myself a lot: staring at the sky, seeking an explanation.
+
+
+
+
+
+### Look up
+
+I know these images are wild looking, and that you probably haven't seen them anywhere. But I promise you that if you do start looking, some day you will begin to notice these Kelvin-Helmholtz waves.
+
+Unless conditions are perfect, they're rarely as big and obvious as the photos here. But when you see some fairweather clouds on a nice day, look at their top edges. Pay attention to the shape. Does it look even a little wavy? Watch it for a little while; see how it changes.
+
+But I'll warn you: once you start looking for patterns like this, you'll never really stop.
+
+### Chaos
+
+Chaos theory governs fluid dynamics — things are fundamentally difficult to predict about 10 days out.
+
+KH waves, gridded photos, a description of the math and a model sum of it, and the idea of looking for patterns where there aren’t any, or maybe where there are some, and whether it matters 
+
+I’m often accused of saying something twice. But if it’s about nature, and patterns, and the way things work, then why wouldn’t I?
+
+
+
+
+
+<br/>
+<br/>
+<br/>
