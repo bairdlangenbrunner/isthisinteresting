@@ -1,110 +1,120 @@
-@tailwind base;
+/* @tailwind base;
 @tailwind components;
-@tailwind utilities;
+@tailwind utilities; */
 
+@import "tailwindcss-colors.css";
+
+/* Base styles */
 :root {
+  /* Define your CSS variables here if needed */
 }
 
-@layer base {
-  html {
-    @apply font-monospace;
-    /* font-family: var(--font-roboto-mono); defined in layout.tsx */
-    @apply text-stone-700;
-  }
+*,
+::before,
+::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
 
-  /* * p,
-  p * {
-    @apply text-stone-700;
-    @apply font-serif;
-    @apply leading-[1.333rem];
-    @apply sm:leading-[1.666rem];
-  } */
+html {
+  font-family: var(--font-mono); /* Replaced @apply font-monospace */
+  color: var(--stone-700); /* Replaced @apply var(--text-stone-700) */
+}
 
+p {
+  font-family: var(--font-serif); /* Replaced @apply font-serif */
+  font-size: 1rem; /* Replaced @apply text-[1rem] */
+  line-height: 1.333rem; /* Replaced @apply leading-[1.333rem] */
+  margin-top: 1rem; /* Replaced @apply my-[1rem] */
+  margin-bottom: 1rem; /* Ensures vertical margin */
+}
+
+.navbar-footer-widths {
+  max-width: 90%; /* Replaced @apply max-w-[90%] */
+}
+
+.paragraph-widths {
+  width: 90%; /* Replaced @apply w-[90%] */
+}
+
+.image-widths {
+  width: 100%; /* Replaced @apply w-[100%] */
+}
+
+a {
+  color: magenta; /* Retained */
+}
+
+a:hover {
+  color: var(--stone-500); /* Replaced @apply text-stone-500 */
+}
+
+h1 {
+  font-weight: 650; /* Replaced @apply font-[650] */
+}
+
+h2 {
+  font-weight: 700; /* Replaced @apply font-[700] */
+  font-size: 1rem; /* Replaced @apply text-base */
+  font-family: var(--font-serif); /* Replaced @apply font-serif */
+  line-height: 1.25rem; /* Replaced @apply leading-[1.25rem] */
+}
+
+h3 {
+  font-weight: 700; /* Replaced @apply font-[700] */
+  margin-top: 2rem; /* Replaced @apply mt-[2rem] */
+  margin-bottom: 1.5rem; /* Replaced @apply mb-[1.5rem] */
+  font-size: 1.5rem; /* Replaced @apply text-[1.5rem] */
+}
+
+h4 {
+  font-weight: 700; /* Replaced @apply font-[700] */
+  margin-top: 2rem; /* Replaced @apply mt-[2rem] */
+  margin-bottom: 1.5rem; /* Replaced @apply mb-[1.5rem] */
+  font-size: 1.25rem; /* Replaced @apply text-[1.25rem] */
+}
+
+figcaption > * {
+  margin-top: 0.75rem; /* Replaced @apply mt-[0.75rem] */
+  color: var(--stone-500); /* Replaced @apply text-neutral-500 */
+  font-family: monospace; /* Replaced @apply font-mono */
+  font-size: 0.75rem; /* Replaced @apply text-xs */
+}
+
+.code-div {
+  background-color: var(--stone-500); /* Replaced @apply bg-stone-100 */
+  padding: 1rem; /* Replaced @apply p-[1rem] */
+  border-radius: 0.5rem; /* Replaced @apply rounded-lg */
+  width: 90%; /* Replaced @apply paragraph-widths */
+  margin-left: auto; /* Replaced @apply mx-auto */
+  margin-right: auto; /* Center-align */
+  overflow: scroll; /* Retained */
+}
+
+/* Media queries grouped at the bottom */
+@media (min-width: 640px) {
   p {
-    @apply font-serif;
-    @apply text-[1rem];
-    @apply leading-[1.333rem];
-    @apply my-[1rem];
-    /* @apply sm:text-[1.125rem]; */
-    /* @apply sm:leading-[1.6rem]; */
-    @apply sm:text-[1.0625rem];
-    @apply sm:leading-[1.5rem];
-    @apply sm:my-[1.25rem];
+    font-size: 1.0625rem; /* Replaced @apply sm:text-[1.0625rem] */
+    line-height: 1.5rem; /* Replaced @apply sm:leading-[1.5rem] */
+    margin-top: 1.25rem; /* Replaced @apply sm:my-[1.25rem] */
+    margin-bottom: 1.25rem; /* Replaced @apply sm:my-[1.25rem] */
   }
-
-  /* p,
-  h1,
-  h2,
-  h3 {
-    @apply text-stone-700;
-  } */
 
   .navbar-footer-widths {
-    @apply max-w-[90%];
-    @apply sm:max-w-[40rem];
+    max-width: 40rem; /* Replaced @apply sm:max-w-[40rem] */
   }
 
   .paragraph-widths {
-    @apply w-[90%];
-    @apply sm:w-[40rem];
+    width: 40rem; /* Replaced @apply sm:w-[40rem] */
   }
 
   .image-widths {
-    @apply w-[100%];
-    @apply sm:w-[30rem];
-  }
-
-  a {
-    color: magenta;
-  }
-  a:hover {
-    @apply text-stone-500;
-  }
-
-  h1 {
-    @apply font-[650];
+    width: 30rem; /* Replaced @apply sm:w-[30rem] */
   }
 
   h2 {
-    @apply font-[700];
-    @apply text-base;
-    @apply sm:text-[1.125rem];
-    @apply font-serif;
-    @apply leading-[1.25rem];
-    @apply sm:leading-[1.5rem];
-  }
-
-  h3 {
-    @apply font-[700];
-    @apply mt-[2rem];
-    @apply mb-[1.5rem];
-    @apply text-[1.5rem];
-  }
-
-  h4 {
-    @apply font-[700];
-    @apply mt-[2rem];
-    @apply mb-[1.5rem];
-    @apply text-[1.25rem];
-  }
-
-  /* ol, ul {
-    @apply paragraph-widths;
-  } */
-
-  figcaption > * {
-    @apply mt-[0.75rem];
-    @apply text-neutral-500;
-    @apply font-mono;
-    @apply text-xs;
-  }
-
-  .code-div {
-    @apply bg-stone-100;
-    @apply p-[1rem];
-    @apply rounded-lg;
-    @apply paragraph-widths;
-    @apply mx-auto;
-    overflow: scroll;
+    font-size: 1.125rem; /* Replaced @apply sm:text-[1.125rem] */
+    line-height: 1.5rem; /* Replaced @apply sm:leading-[1.5rem] */
   }
 }

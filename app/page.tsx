@@ -2,6 +2,7 @@
 import Link from "next/link";
 import { getPosts } from "@/lib/posts";
 import { formatDate } from "@/lib/formatDates";
+import './page.css'
 
 // this is the homepage
 
@@ -10,38 +11,39 @@ export default async function Home() {
 
   return (
     // h-full must be passed to main and to div
-    <main className="h-full">
-      <div className="flex flex-col navbar-footer-widths mx-auto h-full">
-        <div className="flex flex-col flex-grow justify-center">
-          <h1 className="sm:text-5xl text-4xl text-right font-[900]">
-            <span className="text-stone-700">is this</span>
+    <main style={{ height: "100vh" }}>
+      <div className="blog-home-div">
+        <div className="blog-title-div">
+          <h1 className="blog-title-h1">
+            <span className="stone700">is this</span>
             <br />
-            <span className="text-stone-600">interesting</span>
+            <span className="stone600">interesting</span>
             <br />
-            <span className="text-stone-500">though</span>
+            <span className="stone500">though</span>
             <br />
-            <span className="text-stone-400">seriously</span>
+            <span className="stone400">seriously</span>
           </h1>
         </div>
-        <div className="flex flex-col flex-1 justify-start">
+        <div className="latest-post-div">
           {/* <div className="text-lg text-left leading-[1.25rem] font-monospace w-[300px]"> */}
           {/* this site is deeply under construction, but you can see my inaugural */}
           {/* post <Link href="/first-post">here</Link> */}
           {/* </div> */}
           <div>
-            <div className="text-sm sm:text-base text-stone-400 mb-[1rem]">
-              latest post:
-            </div>
+            <div className="latest-post-text">latest post:</div>
             <ol>
               {posts[0] && (
-                <li key={posts[0].slug} className="text-base sm:text-xl">
-                  <Link href={`/${posts[0].slug}`} className="font-bold">
+                <li key={posts[0].slug} className='latest-post-text-link'>
+                  <Link
+                    href={`/${posts[0].slug}`}
+                    
+                  >
                     {posts[0].title}
                   </Link>
-                  <div className="text-sm sm:text-base">
+                  <div className="latest-post-text-date">
                     {formatDate(posts[0].publishDate)}
                   </div>
-                  <div className="text-sm sm:text-base text-stone-400">
+                  <div className="latest-post-text-author">
                     by {posts[0].author}
                   </div>
                 </li>

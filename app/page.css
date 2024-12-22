@@ -1,0 +1,67 @@
+@import "tailwindcss-colors.css";
+
+.blog-home-div {
+  display: flex;
+  flex-direction: column;
+  margin: auto;
+  height: 100vh;
+  /* flex-col navbar-footer-widths mx-auto h-full */
+}
+.blog-title-div {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  justify-content: center;
+  /* background-color: pink; */
+}
+
+.blog-title-h1 {
+  font-size: 2.5rem;
+  line-height: 2.5rem;
+  text-align: right;
+  font-weight: 900;
+}
+
+.latest-post-div {
+  display: flex;
+  flex-direction: column;
+  /* flex: 1 1 0%; */
+  justify-content: start;
+}
+
+.latest-post-text {
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  color: var(--stone-400);
+  margin-bottom: 1rem;
+}
+
+.latest-post-text-link {
+  font-size: 1.25rem;
+  font-weight: bold;
+  text-decoration: none;
+}
+
+.latest-post-text-date {
+  font-size: 1rem;
+  font-weight: normal;
+}
+
+.latest-post-text-author {
+  color: var(--stone-400);
+  font-size: 0.875rem;
+  font-weight: normal;
+}
+
+.stone700 {
+  color: var(--stone-700);
+}
+.stone600 {
+  color: var(--stone-600);
+}
+.stone500 {
+  color: var(--stone-500);
+}
+.stone400 {
+  color: var(--stone-400);
+}

@@ -38,12 +38,31 @@ export default function RootLayout({
       lang="en"
       className={`${domine.variable} ${roboto_mono.variable} ${open_sans.variable}`}
     >
-      <body className="bg-white flex flex-col">
+      <body
+        style={{
+          "background-color": "white",
+          display: "flex",
+          "flex-direction": "column",
+        }}
+      >
         <NavBar />
-        <div className="h-screen flex flex-col">
-          <div className="pt-[28px] sm:pt-[36px] w-screen flex-grow">
+        <div
+          style={{
+            height: "100vh",
+            display: "flex",
+            "flex-direction": "column",
+          }}
+        >
+          <div
+            style={{
+              "padding-top": "3rem",
+              width: "100vw",
+              display: "flex",
+              "flex-grow": "1",
+            }}
+          >
             {/* div that includes footer */}
-            <div className="h-full">
+            <div style={{ height: "100vh" }}>
               {/* gotta pass h-full here so that all children can inherit */}
               {/* everything in all pages should go here */}
               {children}
