@@ -14,23 +14,19 @@ export default async function Home() {
       <div className="flex flex-col navbar-footer-widths mx-auto h-full">
         <div className="flex flex-col flex-grow justify-center">
           <h1 className="sm:text-5xl text-4xl text-right font-[900]">
-            <span className="text-stone-700">is this</span>
+            {/* <span className="text-stone-700">is this</span>
             <br />
             <span className="text-stone-600">interesting</span>
             <br />
             <span className="text-stone-500">though</span>
             <br />
-            <span className="text-stone-400">seriously</span>
+            <span className="text-stone-400">seriously</span> */}
           </h1>
         </div>
         <div className="flex flex-col flex-1 justify-start">
-          {/* <div className="text-lg text-left leading-[1.25rem] font-monospace w-[300px]"> */}
-          {/* this site is deeply under construction, but you can see my inaugural */}
-          {/* post <Link href="/first-post">here</Link> */}
-          {/* </div> */}
           <div>
             <div className="text-sm sm:text-base text-stone-400 mb-[1rem]">
-              latest post:
+              {/* latest post: */}
             </div>
             <ol>
               {posts[0] && (
