@@ -85,6 +85,14 @@ const landmarks = [
 // ─── Chapter Breaks ──────────────────────────────────────────────────
 // Each boundary has an array of lines that scroll through one at a time.
 const CHAPTER_BREAKS = {
+  2: {
+    lines: [
+      "You're still in the troposphere, the lowest layer of the atmosphere.",
+      "This is where almost all weather happens: clouds, rain, turbulence, and the air you breathe are concentrated here.",
+      "It is the densest part of the atmosphere, which is why most of the atmosphere's mass is packed surprisingly close to the ground.",
+      "As you climb through it, temperature usually falls with altitude, helping warm air rise and cold air sink.",
+    ],
+  },
   12: {
     lines: [
       "You've reached the tropopause, at about 12 km.",
@@ -92,6 +100,13 @@ const CHAPTER_BREAKS = {
       "Below here, temperature falls with altitude — warm air rises, cold air sinks, and the atmosphere churns.",
       "Above here, temperature starts to rise. The air becomes stable, layered, and still.",
       "Almost everything you think of as \"weather\" — clouds, rain, wind, storms — is confined to the layer you just passed through.",
+    ],
+  },
+  25: {
+    lines: [
+      "At these altitudes, ozone is good. It absorbs ultraviolet radiation from the sun, acting like sunscreen for life on Earth.",
+      "The Montreal Protocol phased out ozone-depleting chemicals once common in aerosol cans and refrigeration, and the ozone layer has been gradually recovering.",
+      "It remains a rare example of coordinated global action reducing environmental harm before the worst outcomes became permanent.",
     ],
   },
   50: {
@@ -142,6 +157,16 @@ function cToF(celsius) {
 function formatTempWithF(celsius, digits = 0) {
   const fahrenheit = cToF(celsius);
   return `${celsius.toFixed(digits)}°C (${fahrenheit.toFixed(digits)}°F)`;
+}
+
+function createSeededRandom(seed) {
+  let state = seed >>> 0;
+  return () => {
+    state = (state + 0x6d2b79f5) >>> 0;
+    let t = Math.imul(state ^ (state >>> 15), 1 | state);
+    t ^= t + Math.imul(t ^ (t >>> 7), 61 | t);
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+  };
 }
 
 // ─── Color Helpers ───────────────────────────────────────────────────
@@ -305,12 +330,12 @@ function ChapterOverlay({ chapter, progress, lineProgress, passedLines, fadingOu
             key={i}
             style={{
               position: "absolute",
-              left: 0,
-              right: 0,
+              left: compact ? "15vw" : 0,
+              right: compact ? "auto" : 0,
               top: yPercent + "%",
               transform: "translateY(-50%)",
-              textAlign: "center",
-              padding: compact ? "0 18px" : "0 40px",
+              textAlign: compact ? "left" : "center",
+              padding: compact ? 0 : "0 40px",
               opacity: opacity,
               zIndex: t > 0 && t < 1 ? 2 : wasPassed ? 0 : 1,
               willChange: "transform, opacity",
@@ -319,11 +344,11 @@ function ChapterOverlay({ chapter, progress, lineProgress, passedLines, fadingOu
             <div
               style={{
                 fontFamily: "'Domine', Georgia, serif",
-                fontSize: "16px",
+                fontSize: compact ? "16px" : "18px",
                 lineHeight: 1.55,
                 color: "rgba(255, 255, 255, 0.95)",
-                maxWidth: compact ? 320 : 400,
-                margin: "0 auto",
+                maxWidth: compact ? "58vw" : 400,
+                margin: compact ? 0 : "0 auto",
                 background: "rgba(0, 0, 0, 0.35)",
                 backdropFilter: "blur(12px)",
                 WebkitBackdropFilter: "blur(12px)",
@@ -361,12 +386,13 @@ function ChapterOverlay({ chapter, progress, lineProgress, passedLines, fadingOu
 }
 
 // ─── Temperature Profile SVG (draggable) ─────────────────────────────
-function TempProfile({ currentKm, showClimate, onDragAltitude, compact, fullHeight, topOffset, availableHeight }) {
+function TempProfile({ currentKm, showClimate, onDragAltitude, onDragStateChange, compact, fullHeight, topOffset, availableHeight }) {
+  const minimalMobileRail = fullHeight;
   const svgWidth = fullHeight ? 32 : compact ? 54 : 72;
-  const svgHeight = fullHeight
-    ? Math.max(availableHeight, 320)
-    : compact ? 280 : 360;
-  const padding = { top: 16, bottom: 16, left: 4, right: 4 };
+  const svgHeight = Math.max(availableHeight, fullHeight ? 320 : compact ? 280 : 420);
+  const padding = fullHeight
+    ? { top: 18, bottom: 18, left: 7, right: 7 }
+    : { top: 28, bottom: 24, left: 10, right: 10 };
   const plotW = svgWidth - padding.left - padding.right;
   const plotH = svgHeight - padding.top - padding.bottom;
   const svgRef = useRef(null);
@@ -376,7 +402,7 @@ function TempProfile({ currentKm, showClimate, onDragAltitude, compact, fullHeig
     const pts = [];
     const altitudes = [
       0, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 25, 30, 35, 40, 45, 50, 55, 60,
-      65, 70, 75, 80, 85, 90, 100, 120, 150, 200, 300, 400, 500,
+      65, 70, 75, 80, 85, 90, 100, 120, 150, 200, 300, 400, 500, 550,
     ];
     for (const km of altitudes) {
       pts.push({ km, temp: getTemperature(km) });
@@ -432,6 +458,11 @@ function TempProfile({ currentKm, showClimate, onDragAltitude, compact, fullHeig
     };
   }, [isDragging, eventToAltitude, onDragAltitude]);
 
+  useEffect(() => {
+    onDragStateChange?.(isDragging);
+    return () => onDragStateChange?.(false);
+  }, [isDragging, onDragStateChange]);
+
   const handleDragStart = (e) => {
     e.preventDefault();
     setIsDragging(true);
@@ -461,7 +492,7 @@ function TempProfile({ currentKm, showClimate, onDragAltitude, compact, fullHeig
         top: fullHeight ? topOffset : topOffset,
         bottom: fullHeight ? 8 : "auto",
         width: fullHeight ? 40 : "auto",
-        transform: fullHeight ? "none" : "translateY(-50%)",
+        transform: "none",
         zIndex: 30,
         display: "flex",
         flexDirection: "column",
@@ -479,46 +510,49 @@ function TempProfile({ currentKm, showClimate, onDragAltitude, compact, fullHeig
           style={{
             display: "block",
             overflow: "visible",
-            background: "rgba(0,0,0,0.35)",
-            borderRadius: 10,
-            backdropFilter: "blur(10px)",
-            border: isDragging
-              ? "1px solid rgba(255,200,100,0.45)"
-              : "1px solid rgba(255,255,255,0.12)",
+            background: minimalMobileRail ? "rgba(0,0,0,0.2)" : "rgba(0,0,0,0.35)",
+            borderRadius: minimalMobileRail ? 10 : 10,
+            backdropFilter: minimalMobileRail ? "blur(10px)" : "blur(10px)",
+            border: minimalMobileRail
+              ? "1px solid rgba(255,255,255,0.1)"
+              : isDragging
+                ? "1px solid rgba(255,200,100,0.45)"
+                : "1px solid rgba(255,255,255,0.12)",
             cursor: isDragging ? "grabbing" : "grab",
             transition: "border 0.2s ease",
             touchAction: "none",
           }}
         >
-          <text
-            x={padding.left + 6}
-            y={padding.top + 10}
-            fill="rgba(255,255,255,0.52)"
-            fontSize={compact ? "11" : "12"}
-            fontFamily="'Roboto Mono', monospace"
-            letterSpacing="1.2"
-          >
-            TEMP
-          </text>
-          <line
-            x1={tempToX(0)} y1={padding.top} x2={tempToX(0)} y2={padding.top + plotH}
-            stroke="rgba(255,255,255,0.18)" strokeWidth="0.75" strokeDasharray="2,3"
-          />
-          <text x={tempToX(0)} y={padding.top - 5} fill="rgba(255,255,255,0.42)" fontSize={compact ? "12" : "13"} textAnchor="middle" fontFamily="'Roboto Mono', monospace">
-            0°C
-          </text>
+          {!minimalMobileRail && (
+            <>
+              <text
+                x={padding.left + 6}
+                y={padding.top + 10}
+                fill="rgba(255,255,255,0.52)"
+                fontSize={compact ? "11" : "12"}
+                fontFamily="'Roboto Mono', monospace"
+                letterSpacing="1.2"
+              >
+                TEMP
+              </text>
+              <line
+                x1={tempToX(0)} y1={padding.top} x2={tempToX(0)} y2={padding.top + plotH}
+                stroke="rgba(255,255,255,0.18)" strokeWidth="0.75" strokeDasharray="2,3"
+              />
 
-          {boundaries.map((km) => (
-            <line
-              key={km}
-              x1={padding.left} y1={kmToY(km)} x2={padding.left + plotW} y2={kmToY(km)}
-              stroke="rgba(255,255,255,0.22)" strokeWidth="1" strokeDasharray="3,3"
-            />
-          ))}
+              {boundaries.map((km) => (
+                <line
+                  key={km}
+                  x1={padding.left} y1={kmToY(km)} x2={padding.left + plotW} y2={kmToY(km)}
+                  stroke="rgba(255,255,255,0.22)" strokeWidth="1" strokeDasharray="3,3"
+                />
+              ))}
+            </>
+          )}
 
           <path d={pathD} fill="none" stroke="rgba(255,180,100,0.78)" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
 
-          {showClimate && (
+          {showClimate && !minimalMobileRail && (
             <path
               d={samples
                 .map((p, i) => {
@@ -536,7 +570,7 @@ function TempProfile({ currentKm, showClimate, onDragAltitude, compact, fullHeig
             />
           )}
 
-          {isDragging && (
+          {isDragging && !minimalMobileRail && (
             <circle cx={curX} cy={curY} r="12" fill="rgba(255,200,100,0.15)" />
           )}
           <circle
@@ -546,27 +580,16 @@ function TempProfile({ currentKm, showClimate, onDragAltitude, compact, fullHeig
             style={{ transition: "r 0.15s ease" }}
           />
 
-          <text
-            x={Math.min(svgWidth - 8, curX + 10)}
-            y={Math.max(padding.top + 20, Math.min(svgHeight - 12, curY - 8))}
-            fill="rgba(255,215,140,0.95)"
-            fontSize={compact ? "11" : "12"}
-            fontFamily="'Roboto Mono', monospace"
-            fontWeight={isDragging ? "700" : "500"}
-            textAnchor={curX > svgWidth - 56 ? "end" : "start"}
-          >
-            {formatTempWithF(curTemp)}
-          </text>
-
-          <text x={padding.left + 2} y={padding.top + plotH + 13} fill="rgba(255,255,255,0.34)" fontSize={compact ? "12" : "13"} fontFamily="'Roboto Mono', monospace">
-            −100°C
-          </text>
-          {showClimate && (
+          {!minimalMobileRail && (
             <>
-              <line x1={padding.left + 6} y1={svgHeight - 34} x2={padding.left + 20} y2={svgHeight - 34} stroke="rgba(255,180,100,0.7)" strokeWidth="2" />
-              <text x={padding.left + 24} y={svgHeight - 31} fill="rgba(255,255,255,0.5)" fontSize={compact ? "11" : "12"} fontFamily="'Roboto Mono', monospace">Now</text>
-              <line x1={padding.left + 6} y1={svgHeight - 18} x2={padding.left + 20} y2={svgHeight - 18} stroke="rgba(255,90,50,0.55)" strokeWidth="2" strokeDasharray="3,2" />
-              <text x={padding.left + 24} y={svgHeight - 15} fill="rgba(255,90,50,0.58)" fontSize={compact ? "11" : "12"} fontFamily="'Roboto Mono', monospace">+CO₂</text>
+              {showClimate && (
+                <>
+                  <line x1={padding.left + 6} y1={svgHeight - 34} x2={padding.left + 20} y2={svgHeight - 34} stroke="rgba(255,180,100,0.7)" strokeWidth="2" />
+                  <text x={padding.left + 24} y={svgHeight - 31} fill="rgba(255,255,255,0.5)" fontSize={compact ? "11" : "12"} fontFamily="'Roboto Mono', monospace">Now</text>
+                  <line x1={padding.left + 6} y1={svgHeight - 18} x2={padding.left + 20} y2={svgHeight - 18} stroke="rgba(255,90,50,0.55)" strokeWidth="2" strokeDasharray="3,2" />
+                  <text x={padding.left + 24} y={svgHeight - 15} fill="rgba(255,90,50,0.58)" fontSize={compact ? "11" : "12"} fontFamily="'Roboto Mono', monospace">+CO₂</text>
+                </>
+              )}
             </>
           )}
         </svg>
@@ -575,12 +598,14 @@ function TempProfile({ currentKm, showClimate, onDragAltitude, compact, fullHeig
   );
 }
 
-function AltitudeRuler({ currentKm, onDragAltitude, compact }) {
+function AltitudeRuler({ currentKm, onDragAltitude, onDragStateChange, compact, topOffset, availableHeight }) {
   const rulerRef = useRef(null);
   const [isDragging, setIsDragging] = useState(false);
   const rulerTicks = [0, 10, 20, 50, 85, 100, 200, 300, 400, 500];
-  const rulerHeight = compact ? 320 : 420;
+  const rulerHeight = Math.max(availableHeight, compact ? 320 : 420);
   const rulerWidth = compact ? 52 : 68;
+  const rulerInset = compact ? 14 : 16;
+  const trackHeight = rulerHeight - rulerInset * 2;
 
   const eventToAltitude = useCallback((e) => {
     if (!rulerRef.current) return null;
@@ -615,6 +640,11 @@ function AltitudeRuler({ currentKm, onDragAltitude, compact }) {
     };
   }, [isDragging, eventToAltitude, onDragAltitude]);
 
+  useEffect(() => {
+    onDragStateChange?.(isDragging);
+    return () => onDragStateChange?.(false);
+  }, [isDragging, onDragStateChange]);
+
   const handleDragStart = (e) => {
     e.preventDefault();
     setIsDragging(true);
@@ -627,8 +657,8 @@ function AltitudeRuler({ currentKm, onDragAltitude, compact }) {
       style={{
         position: "fixed",
         right: compact ? 8 : 12,
-        top: "50%",
-        transform: "translateY(-50%)",
+        top: topOffset,
+        transform: compact ? "translateY(-50%)" : "none",
         height: rulerHeight,
         width: rulerWidth,
         zIndex: 30,
@@ -655,18 +685,18 @@ function AltitudeRuler({ currentKm, onDragAltitude, compact }) {
           style={{
             position: "absolute",
             left: compact ? 13 : 16,
-            top: 12,
-            bottom: 12,
+            top: rulerInset,
+            bottom: rulerInset,
             width: 2,
             background: "rgba(255,255,255,0.18)",
           }}
         />
 
         {rulerTicks.map((km) => {
-          const pct = (km / MAX_ALTITUDE_KM) * 100;
+          const bottomOffset = (km / MAX_ALTITUDE_KM) * trackHeight + rulerInset;
           const isMajor = km === 0 || km === 100 || km === 200 || km === 400;
           return (
-            <div key={km} style={{ position: "absolute", bottom: `calc(${pct}% + 12px)`, left: compact ? 13 : 16, transform: "translateY(50%)" }}>
+            <div key={km} style={{ position: "absolute", bottom: bottomOffset, left: compact ? 13 : 16, transform: "translateY(50%)" }}>
               <div
                 style={{
                   width: isMajor ? 12 : 8,
@@ -696,9 +726,11 @@ function AltitudeRuler({ currentKm, onDragAltitude, compact }) {
         <div
           style={{
             position: "absolute",
-            bottom: `calc(${Math.min(100, (currentKm / MAX_ALTITUDE_KM) * 100)}% + 12px)`,
-            left: compact ? 13 : 16,
+            bottom: Math.min(1, currentKm / MAX_ALTITUDE_KM) * trackHeight + rulerInset,
+            left: compact ? 14 : 17,
             transform: "translate(-50%, 50%)",
+            width: 0,
+            height: 0,
           }}
         >
           {isDragging && (
@@ -717,6 +749,9 @@ function AltitudeRuler({ currentKm, onDragAltitude, compact }) {
           )}
           <div
             style={{
+              position: "absolute",
+              left: 0,
+              top: 0,
               width: isDragging ? 10 : 8,
               height: isDragging ? 10 : 8,
               borderRadius: "50%",
@@ -754,14 +789,17 @@ function AltitudeRuler({ currentKm, onDragAltitude, compact }) {
 // ─── Stars ───────────────────────────────────────────────────────────
 function Stars() {
   const stars = useMemo(
-    () =>
-      Array.from({ length: 80 }, (_, i) => ({
-        top: Math.random() * 45,
-        left: Math.random() * 100,
-        size: Math.random() * 2 + 0.5,
-        opacity: Math.random() * 0.6 + 0.1,
-        twinkle: Math.random() * 4 + 2,
-      })),
+    () => {
+      const random = createSeededRandom(101);
+      return Array.from({ length: 80 }, () => ({
+        top: random() * 45,
+        left: random() * 100,
+        size: random() * 2 + 0.5,
+        opacity: random() * 0.6 + 0.1,
+        twinkle: random() * 4 + 2,
+        delay: random() * 3,
+      }));
+    },
     []
   );
   return (
@@ -779,7 +817,7 @@ function Stars() {
             borderRadius: "50%",
             opacity: s.opacity,
             animation: `twinkle ${s.twinkle}s ease-in-out infinite`,
-            animationDelay: `${Math.random() * 3}s`,
+            animationDelay: `${s.delay}s`,
           }}
         />
       ))}
@@ -827,16 +865,18 @@ function CruisingPlanes({ currentKm, topVisibleKm, oceanHeight }) {
 
 function TroposphereClouds({ oceanHeight }) {
   const clouds = useMemo(
-    () =>
-      Array.from({ length: 10 }, (_, index) => ({
+    () => {
+      const random = createSeededRandom(202);
+      return Array.from({ length: 10 }, (_, index) => ({
         id: index,
-        km: Math.random() * 11.5 + 0.2,
-        left: Math.random() * 100,
-        size: Math.random() * 36 + 56,
+        km: random() * 11.5 + 0.2,
+        left: random() * 100,
+        size: random() * 36 + 56,
         opacity: 1,
-        duration: Math.random() * 28 + 72,
-        delay: -(Math.random() * 80),
-      })),
+        duration: random() * 28 + 72,
+        delay: -(random() * 80),
+      }));
+    },
     []
   );
 
@@ -869,16 +909,18 @@ function TroposphereClouds({ oceanHeight }) {
 
 function OzoneMolecules({ oceanHeight }) {
   const molecules = useMemo(
-    () =>
-      Array.from({ length: 18 }, (_, index) => ({
+    () => {
+      const random = createSeededRandom(303);
+      return Array.from({ length: 18 }, (_, index) => ({
         id: index,
-        km: 20 + Math.random() * 5,
-        left: Math.random() * 100,
-        size: Math.random() * 8 + 12,
-        opacity: Math.random() * 0.18 + 0.18,
-        duration: Math.random() * 18 + 22,
-        delay: -(Math.random() * 24),
-      })),
+        km: 20 + random() * 5,
+        left: random() * 100,
+        size: random() * 8 + 12,
+        opacity: random() * 0.18 + 0.18,
+        duration: random() * 18 + 22,
+        delay: -(random() * 24),
+      }));
+    },
     []
   );
 
@@ -1060,14 +1102,9 @@ function KilimanjaroComparison({ compact, phone, oceanHeight }) {
 
 // ─── Main Component ──────────────────────────────────────────────────
 export default function AtmosphereScrolly() {
-  const [viewport, setViewport] = useState(() => ({
-    width: typeof window !== "undefined" ? window.innerWidth : 1280,
-    height: typeof window !== "undefined" ? window.innerHeight : 800,
-  }));
+  const [viewport, setViewport] = useState({ width: 1280, height: 800 });
   // Ocean = half the viewport height
-  const [oceanHeight, setOceanHeight] = useState(() =>
-    typeof window !== "undefined" ? Math.round(window.innerHeight / 2) : 400
-  );
+  const [oceanHeight, setOceanHeight] = useState(400);
   const totalHeight = ATM_HEIGHT + oceanHeight;
 
   useEffect(() => {
@@ -1095,6 +1132,8 @@ export default function AtmosphereScrolly() {
 
   const [currentKm, setCurrentKm] = useState(0);
   const [showClimate, setShowClimate] = useState(false);
+  const [isTempDragging, setIsTempDragging] = useState(false);
+  const [isRulerDragging, setIsRulerDragging] = useState(false);
   const containerRef = useRef(null);
   const hudRef = useRef(null);
   const [hudHeight, setHudHeight] = useState(88);
@@ -1115,12 +1154,16 @@ export default function AtmosphereScrolly() {
   const touchStartY = useRef(null);
 
   const activeChapter = activeChapterKm ? CHAPTER_BREAKS[activeChapterKm] : null;
+  const isScaleDragging = isTempDragging || isRulerDragging;
   const isCompact = viewport.width < 900;
   const isPhone = viewport.width < 680;
   const showRuler = viewport.width >= 880;
-  const mobileRailWidth = 40;
-  const profileTopOffset = isPhone ? hudHeight + 8 : "50%";
-  const profileAvailableHeight = isPhone ? Math.max(viewport.height - hudHeight - 16, 320) : 360;
+  const mobileRailWidth = 0;
+  const desktopOverlayViewport = Math.max(viewport.height - hudHeight - 24, 420);
+  const desktopOverlayHeight = Math.max(Math.round(desktopOverlayViewport * 0.8), 420);
+  const desktopOverlayTop = hudHeight + Math.max((desktopOverlayViewport - desktopOverlayHeight) / 2 + 8, 8);
+  const profileTopOffset = isPhone ? hudHeight + 8 : desktopOverlayTop;
+  const profileAvailableHeight = isPhone ? Math.max(viewport.height - hudHeight - 16, 320) : desktopOverlayHeight;
 
   useEffect(() => {
     if (!hudRef.current) return undefined;
@@ -1160,12 +1203,12 @@ export default function AtmosphereScrolly() {
 
   // Called by TempProfile when user drags the dot
   const scrollToAltitude = useCallback((km) => {
-    if (!containerRef.current || activeChapterKm) return; // block during chapter
+    if (!containerRef.current || (activeChapterKm && !isScaleDragging)) return; // block during chapter unless dragging a scale
     const el = containerRef.current;
     const targetPx = altitudeToPixels(km) + oceanHeight;
     const targetScrollTop = el.scrollHeight - el.clientHeight - targetPx;
     el.scrollTop = targetScrollTop;
-  }, [activeChapterKm, oceanHeight]);
+  }, [activeChapterKm, isScaleDragging, oceanHeight]);
 
   const updateAltitude = useCallback(() => {
     if (!containerRef.current) return;
@@ -1184,7 +1227,7 @@ export default function AtmosphereScrolly() {
   }, [currentKm, oceanHeight]); // recalc whenever currentKm updates (same scroll event)
 
   useEffect(() => {
-    if (activeChapterKm || chapterCooldown.current) return;
+    if (activeChapterKm || chapterCooldown.current || isScaleDragging) return;
 
     const boundaries = Object.keys(CHAPTER_BREAKS).map(Number);
     for (const bKm of boundaries) {
@@ -1220,7 +1263,20 @@ export default function AtmosphereScrolly() {
     }
 
     prevCenterKm.current = centerKm;
-  }, [centerKm, activeChapterKm, oceanHeight]);
+  }, [centerKm, activeChapterKm, isScaleDragging, oceanHeight]);
+
+  useEffect(() => {
+    if (!isScaleDragging || !activeChapterKm) return;
+    setActiveChapterKm(null);
+    setChapterProgress(0);
+    setChapterLineProgress([]);
+    setChapterPassedLines([]);
+    setChapterFadingOut(false);
+    chapterCooldown.current = false;
+    frozenScrollTop.current = null;
+    prevChapterProgress.current = null;
+    chapterActivatedAt.current = 0;
+  }, [isScaleDragging, activeChapterKm]);
 
   useEffect(() => {
     if (!activeChapter) {
@@ -1532,6 +1588,7 @@ export default function AtmosphereScrolly() {
           currentKm={currentKm}
           showClimate={showClimate}
           onDragAltitude={scrollToAltitude}
+          onDragStateChange={setIsTempDragging}
           compact={isPhone}
           fullHeight={isPhone}
           topOffset={profileTopOffset}
@@ -1614,16 +1671,16 @@ export default function AtmosphereScrolly() {
             style={{
               position: "absolute",
               bottom: 30,
-              left: 0,
+              left: isPhone ? "15vw" : 0,
               right: 0,
-              textAlign: "center",
-              padding: "0 20px",
+              textAlign: isPhone ? "left" : "center",
+              padding: isPhone ? "0 20px 0 0" : "0 20px",
             }}
           >
             <div style={{ marginBottom: 10, fontSize: isPhone ? "44px" : "52px", lineHeight: 1, color: "rgba(140, 190, 210, 0.42)", animation: "pulse 2s ease-in-out infinite" }}>
               ↑
             </div>
-            <div style={{ fontSize: isPhone ? "16px" : "18px", color: "rgba(160, 210, 228, 0.76)", maxWidth: isPhone ? 320 : 460, margin: "0 auto", lineHeight: 1.65, fontFamily: "'Domine', Georgia, serif" }}>
+            <div style={{ fontSize: isPhone ? "16px" : "18px", color: "rgba(160, 210, 228, 0.76)", maxWidth: isPhone ? 260 : 460, margin: isPhone ? 0 : "0 auto", lineHeight: 1.65, fontFamily: "'Domine', Georgia, serif" }}>
               You&apos;re standing at sea level. The atmosphere stretches above you for hundreds of kilometers — but almost all of it, by mass, is closer than you think.
             </div>
           </div>
@@ -1658,43 +1715,75 @@ export default function AtmosphereScrolly() {
             const midKm = (layer.startKm + layer.endKm) / 2;
             const subColor = getSubtextColor(midKm);
             const layerOffset = getLayerLabelOffset(layer.name, isCompact, isPhone);
+            const labelBottom = bottomPx + 18 + layerOffset;
+            const descriptionBottom = labelBottom + (isPhone ? 52 : isCompact ? 76 : 94);
+            const textAnchorStyle = isPhone
+              ? { left: "15vw", right: "auto", textAlign: "left", maxWidth: 220 }
+              : { left: "auto", right: "10vw", textAlign: "right", maxWidth: isCompact ? 190 : 240 };
             return (
-              <div
-                key={layer.name + "-label"}
-                style={{
-                  position: "absolute",
-                  bottom: bottomPx + heightPx / 2 - 50 + layerOffset,
-                  right: "10vw",
-                  maxWidth: isPhone ? 150 : isCompact ? 190 : 240,
-                  textAlign: "right",
-                }}
-              >
-                <div style={{ fontSize: isPhone ? "12px" : "13px", letterSpacing: "0.15em", textTransform: "uppercase", color: subColor, marginBottom: 5 }}>
-                  {layer.name}
-                </div>
-                {!isPhone && (
-                  <div style={{ fontSize: isCompact ? "13px" : "15px", color: subColor, lineHeight: 1.65, fontFamily: "'Domine', Georgia, serif" }}>
-                    {layer.description}
-                  </div>
-                )}
-                {showClimate && layer.climateNote && (
+              <div key={layer.name + "-label"}>
+                <div
+                  style={{
+                    position: "absolute",
+                    bottom: labelBottom,
+                    left: isPhone ? "15vw" : "8vw",
+                    right: isPhone ? "auto" : "8vw",
+                    zIndex: layer.name === "Troposphere" ? 3 : 1,
+                    pointerEvents: "none",
+                  }}
+                >
                   <div
                     style={{
-                      fontSize: isPhone ? "14px" : "16px",
-                      color: "rgba(255, 150, 90, 0.92)",
-                      lineHeight: 1.6,
-                      marginTop: 8,
-                      padding: isPhone ? "8px 9px" : "10px 12px",
-                      background: "rgba(255, 100, 50, 0.08)",
-                      borderRadius: 6,
-                      borderLeft: "2px solid rgba(255, 100, 50, 0.3)",
-                      fontFamily: "'Domine', Georgia, serif",
-                      transition: "opacity 0.4s ease",
+                      fontSize: isPhone ? "34px" : isCompact ? "54px" : "72px",
+                      letterSpacing: "0.08em",
+                      textTransform: "uppercase",
+                      color: subColor,
+                      opacity: isPhone ? 0.12 : 0.1,
+                      fontWeight: 700,
+                      lineHeight: 0.95,
+                      textAlign: isPhone ? "left" : "right",
+                      whiteSpace: "nowrap",
+                      transform: "none",
+                      transformOrigin: "right bottom",
+                      animation: "layerPulse 6s ease-in-out infinite",
                     }}
                   >
-                    {layer.climateNote}
+                    {layer.name}
                   </div>
-                )}
+                </div>
+
+                <div
+                  style={{
+                    position: "absolute",
+                    bottom: descriptionBottom,
+                    zIndex: 9,
+                    ...textAnchorStyle,
+                  }}
+                >
+                  {!isPhone && (
+                    <div style={{ fontSize: isCompact ? "13px" : "15px", color: subColor, lineHeight: 1.65, fontFamily: "'Domine', Georgia, serif", animation: "layerPulse 6s ease-in-out infinite" }}>
+                      {layer.description}
+                    </div>
+                  )}
+                  {showClimate && layer.climateNote && (
+                    <div
+                      style={{
+                        fontSize: isPhone ? "14px" : "16px",
+                        color: "rgba(255, 150, 90, 0.92)",
+                        lineHeight: 1.6,
+                        marginTop: 8,
+                        padding: isPhone ? "8px 9px" : "10px 12px",
+                        background: "rgba(255, 100, 50, 0.08)",
+                        borderRadius: 6,
+                        borderLeft: "2px solid rgba(255, 100, 50, 0.3)",
+                        fontFamily: "'Domine', Georgia, serif",
+                        transition: "opacity 0.4s ease",
+                      }}
+                    >
+                      {layer.climateNote}
+                    </div>
+                  )}
+                </div>
               </div>
             );
           })}
@@ -1737,8 +1826,8 @@ export default function AtmosphereScrolly() {
                 style={{
                   position: "absolute",
                   bottom: landmarkBlockBottom,
-                  left: isPhone ? `${mobileRailWidth + 26 + landmarkOffset}px` : `calc(10vw + ${landmarkOffset}px)`,
-                  maxWidth: isPhone ? "50%" : isCompact ? "42%" : "36%",
+                  left: isPhone ? `calc(15vw + ${landmarkOffset}px)` : `calc(10vw + ${landmarkOffset}px)`,
+                  maxWidth: isPhone ? "58vw" : isCompact ? "42%" : "36%",
                   zIndex: 8,
                 }}
               >
@@ -1798,7 +1887,10 @@ export default function AtmosphereScrolly() {
         <AltitudeRuler
           currentKm={currentKm}
           onDragAltitude={scrollToAltitude}
+          onDragStateChange={setIsRulerDragging}
           compact={isCompact}
+          topOffset={desktopOverlayTop}
+          availableHeight={desktopOverlayHeight}
         />
       )}
 
@@ -1810,6 +1902,10 @@ export default function AtmosphereScrolly() {
         @keyframes oceanDrift {
           0% { transform: translateX(0); }
           100% { transform: translateX(-50%); }
+        }
+        @keyframes layerPulse {
+          0%, 100% { opacity: 0.1; filter: brightness(1); }
+          50% { opacity: 0.15; filter: brightness(0.72); }
         }
         @keyframes planeFlyby {
           0% { transform: translateX(0) translateY(0) rotate(45deg); opacity: 0.78; }
