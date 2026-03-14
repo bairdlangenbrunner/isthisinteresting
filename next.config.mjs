@@ -1,23 +1,16 @@
-// const withMDX = require('@next/mdx')()
- 
-// // /* @type {import('next').NextConfig} */
-// const nextConfig = {
-//   // Configure `pageExtensions` to include MDX files
-//   pageExtensions: ['js', 'jsx', 'mdx', 'ts', 'tsx'],
-//   // Optionally, add any other Next.js config below
-// }
- 
-// module.exports = withMDX(nextConfig)
-
 import nextMDX from '@next/mdx'
+import path from 'path'
+import { fileURLToPath } from 'url'
 
 const withMDX = nextMDX({
-  estension: /\.mdx?$/,
+  extension: /\.mdx?$/,
   options: {
     remarkPlugins: [],
     rehypePlugins: []
   }
 })
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
@@ -32,10 +25,20 @@ const nextConfig = {
   // distDir: 'dist',
   
   pageExtensions: ['ts','tsx','js','jsx','md','mdx'],
-  experimental: {
+  turbopack: {
+    root: __dirname
   },
   images: {
-    domains: ['github.com', 'lh3googleusercontent.com'],
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'github.com'
+      },
+      {
+        protocol: 'https',
+        hostname: 'lh3.googleusercontent.com'
+      }
+    ],
     unoptimized: true
   }
 }

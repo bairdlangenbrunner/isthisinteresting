@@ -19,7 +19,6 @@ export async function getPosts(): Promise<PostMetadata[]> {
 
   // sort object of posts from newest up top down to oldest
   posts.sort((a, b) => +new Date(b.publishDate) - +new Date(a.publishDate));
-  // only keep the ones that will be published
-  posts.filter(post => post.publish===true)
+
   return posts;
 }

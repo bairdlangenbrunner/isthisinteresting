@@ -4,9 +4,10 @@ import { useState, useEffect, useRef, useMemo, useCallback } from "react";
 
 // ─── Scale & Constants ───────────────────────────────────────────────
 const MAX_ALTITUDE_KM = 550;
+const MOBILE_TEMP_OVERLAY_WIDTH = 40;
 // Ocean height is computed dynamically as 50vh inside the component
 
-const PX_PER_KM = 200;
+const PX_PER_KM = 250;
 
 function altitudeToPixels(km) {
   return Math.max(0, km * PX_PER_KM);
@@ -26,9 +27,9 @@ const layers = [
     endKm: 12,
     color: "rgba(135, 206, 235, 0.12)",
     description:
-      "Where all weather happens. Temperature drops about 6.5°C (11.7°F) for every kilometer you climb.",
+      "The TROPOSPHERE is the lowest 10–12 km of the atmosphere, and is where all weather occurs. Temperature drops about 6.5°C (11.7°F) for every kilometer you climb.",
     climateNote:
-      "This layer is warming fastest — about 0.2°C (0.36°F) per decade near the surface. More moisture, stronger storms, shifting jet streams.",
+      "This layer is warming fastest, about 0.2°C (0.36°F) per decade near the surface. More moisture, stronger storms, shifting jet streams.",
   },
   {
     name: "Stratosphere",
@@ -36,7 +37,7 @@ const layers = [
     endKm: 50,
     color: "rgba(100, 149, 237, 0.08)",
     description:
-      "Calm, stable air. Commercial jets cruise near the bottom. The ozone layer lives here, absorbing UV and warming the air.",
+      "The STRATOSPHERE is stratified, with calm and stable air. Commercial jets cruise near its lower boundary, since there's not much turbulence. The ozone layer lives here, absorbing ultraviolet light and warming the air.",
     climateNote:
       "Counterintuitively, this layer is cooling as CO₂ radiates more heat to space. The ozone layer is slowly recovering from CFCs.",
   },
@@ -46,9 +47,9 @@ const layers = [
     endKm: 85,
     color: "rgba(72, 61, 139, 0.08)",
     description:
-      "The coldest place in Earth's atmosphere, dropping to −90°C (−130°F). Meteors burn up here — the 'shooting stars' you see.",
+      "The MESOSPHERE is the coldest place in Earth's atmosphere, dropping to −90°C (−130°F). Meteors burn up here because of air compression and friction, producing the shooting stars we see in the night sky.",
     climateNote:
-      "Cooling and contracting. Noctilucent clouds — ice crystals at 80 km — are appearing more often, possibly a fingerprint of climate change.",
+      "Cooling and contracting. Noctilucent clouds, composed entirely of ice crystals at 80 km, appear more often, possibly a fingerprint of climate change.",
   },
   {
     name: "Thermosphere",
@@ -56,29 +57,39 @@ const layers = [
     endKm: 500,
     color: "rgba(25, 25, 80, 0.06)",
     description:
-      "Temperatures soar above 1000°C (1832°F), but with so few molecules you wouldn't feel warm. The ISS orbits here. Auroras shimmer through this layer.",
+      "In the THERMOSPHERE, temperatures soar above 1000°C (1832°F), but with so few molecules, you wouldn't actually feel warm. The ISS orbits here, and auroras shimmer through this layer.",
     climateNote:
-      "CO₂ increase is causing this layer to cool and contract — satellites experience less drag, which changes their orbital decay rates.",
+      "CO₂ increase is causing this layer to cool and contract; satellites experience less drag, which changes their orbital decay rates.",
   },
 ];
 
 const landmarks = [
-  { km: 0, label: "Sea level", detail: "1013 hPa · 15°C (59°F) · where you are now" },
+  { km: 0, label: "Sea level", detail: "1013 hPa · 15°C (59°F)" },
   { km: 0.8, label: "Burj Khalifa", detail: "The tallest building on Earth (828 m)" },
-  { km: 5.895, label: "Mount Kilimanjaro", detail: "Africa's tallest mountain (5,895 m)" },
+  { km: 5.895, label: "Mount Kilimanjaro", detail: "Africa's tallest mountain (5.895 km), at roughly 1/2 of sea-level pressure" },
   { km: 5.5, label: "Half the atmosphere by mass", detail: "Half of all air molecules are below this point" },
-  { km: 8.8, label: "Mount Everest", detail: "8,849 m — air pressure is 1/3 of sea level" },
+  { km: 8.8, label: "Mount Everest", detail: "8.849 km; air pressure is 1/3 of sea level" },
   { km: 10, label: "Cruising altitude", detail: "Where commercial jets fly · about −50°C (−58°F) outside" },
   { km: 12, label: "Tropopause", detail: "The boundary where weather ends and the stratosphere begins", isBoundary: true },
+  { km: 13.7, label: "80% of the atmosphere by mass", detail: "About 80% of the atmosphere's mass lies below roughly 13.7 km" },
+  { km: 16, label: "Lower stratosphere", detail: "The air here is very dry and stable; most water vapor is trapped below the tropopause" },
   { km: 20, label: "Ozone layer begins", detail: "Peak ozone concentration is around 20–25 km" },
-  { km: 35, label: "Peak ozone density", detail: "Maximum O₃ concentration — blocks UV-B and UV-C" },
+  { km: 35, label: "Peak ozone density", detail: "Maximum O₃ concentration; blocks UV-B and UV-C" },
   { km: 39, label: "Felix Baumgartner's jump", detail: "Jumped from 39 km in 2012, broke the sound barrier in freefall" },
   { km: 50, label: "Stratopause", detail: "Temperature peaks here (~0°C / 32°F) before dropping again", isBoundary: true },
-  { km: 80, label: "Noctilucent clouds", detail: "Earth's highest clouds — ice crystals glowing after sunset" },
+  { km: 80, label: "Noctilucent clouds", detail: "Earth's highest clouds, ice crystals glowing after sunset" },
   { km: 85, label: "Mesopause", detail: "The coldest point in the atmosphere: around −90°C (−130°F)", isBoundary: true },
   { km: 100, label: "Kármán line", detail: "The internationally recognized edge of space" },
   { km: 110, label: "Auroras begin", detail: "Northern and southern lights shimmer from ~110–500 km" },
-  { km: 408, label: "International Space Station", detail: "Orbiting at ~408 km · still technically in the atmosphere" },
+  { km: 150, label: "Atomic oxygen zone", detail: "Single oxygen atoms become common here and can slowly erode spacecraft surfaces" },
+  { km: 200, label: "Very low Earth orbit", detail: "Satellites this low lose altitude quickly because the atmosphere still creates measurable drag" },
+  { km: 250, label: "Upper thermosphere", detail: "\"Temperature\" only really describes how fast particles are moving here, not how warm it would feel to your body" },
+  { km: 300, label: "Auroral peak activity", detail: "Some of the brightest auroral curtains and arcs form in this altitude range" },
+  { km: 350, label: "Orbital drag still matters", detail: "Even here, trace atmosphere steadily slows satellites unless they boost their orbit" },
+  { km: 408, label: "International Space Station", detail: "Orbiting at ~408 km — still technically in the atmosphere" },
+  { km: 450, label: "Exosphere starts to dominate", detail: "Molecules can travel long distances without colliding, and some escape Earth altogether" },
+  { km: 500, label: "Thermopause", detail: "Above here is the exosphere, where the atmosphere fades into the vacuum of space.", isBoundary: true },
+  { km: 550, label: "Almost space, still atmosphere", detail: "The air here is extraordinarily sparse, but the atmosphere still has not cleanly ended" },
 ];
 
 
@@ -87,19 +98,20 @@ const landmarks = [
 const CHAPTER_BREAKS = {
   2: {
     lines: [
-      "You're still in the troposphere, the lowest layer of the atmosphere.",
-      "This is where almost all weather happens: clouds, rain, turbulence, and the air you breathe are concentrated here.",
-      "It is the densest part of the atmosphere, which is why most of the atmosphere's mass is packed surprisingly close to the ground.",
-      "As you climb through it, temperature usually falls with altitude, helping warm air rise and cold air sink.",
+      "Welcome to the troposphere. This is the lowest layer (the first 10–12 km) of the atmosphere.",
+      "As you climb up, temperature decreases, so warmer, less dense air sits under colder, denser air. This leads to convection, like a lava lamp.",
+      //"Temperature drops about 6.5ºC (11.7ºF) for every km you climb. This is called the atmospheric \"lapse rate\".",
+      "This convection means that the troposphere is where almost all weather occurs: clouds, rain, turbulence, storms.",
     ],
   },
   12: {
     lines: [
       "You've reached the tropopause, at about 12 km.",
-      "This is where weather ends.",
-      "Below here, temperature falls with altitude — warm air rises, cold air sinks, and the atmosphere churns.",
-      "Above here, temperature starts to rise. The air becomes stable, layered, and still.",
-      "Almost everything you think of as \"weather\" — clouds, rain, wind, storms — is confined to the layer you just passed through.",
+      "Almost everything you think of as \"weather\" is confined to the troposphere that you just passed through.",
+      "Below this height, it gets colder with altitude. Warm air rises, cold air sinks, and the atmosphere churns.",
+      "Above it is the stratosphere. Temperature starts to increase with height, so colder, denser air sits below warmer air above.",
+      "This means air is stratified, and doesn't naturally churn or convect.",
+      "Planes fly near these altitudes because there's far less turbulence. But it's still incredibly windy up here. ",
     ],
   },
   25: {
@@ -112,7 +124,7 @@ const CHAPTER_BREAKS = {
   50: {
     lines: [
       "You've reached the stratopause, at about 50 km.",
-      "You just passed through the ozone layer — a thin veil of O₃ that absorbs the sun's ultraviolet radiation.",
+      "You just passed through the ozone layer, a thin veil of O₃ that absorbs the sun's ultraviolet radiation.",
       "That absorption is why temperatures rose through the stratosphere.",
       "Above here, without ozone to capture sunlight, temperatures plummet again.",
     ],
@@ -122,16 +134,24 @@ const CHAPTER_BREAKS = {
       "You've reached the mesopause, at about 85 km.",
       "This is the coldest point in the atmosphere.",
       "Like the troposphere, the mesosphere's temperature decreases with height, allowing for mixing.",
-      "Shooting stars burn up here — bits of cosmic debris incinerated by friction with the thin remaining air.",
+      "Shooting stars burn up here, bits of cosmic debris incinerated by friction with the thin remaining air.",
       "Above this line, the rules change. Molecules are so sparse that temperature loses its everyday meaning.",
     ],
   },
   100: {
     lines: [
-      "You've crossed the Kármán line — 100 km.",
+      "You've crossed the Kármán line, 100 km up.",
       "This is the internationally recognized boundary of space.",
       "Below here, aerodynamics works. Above here, only orbital mechanics matter.",
       "And yet, the atmosphere doesn't truly end. It just... fades.",
+    ],
+  },
+  500: {
+    lines: [
+      "You've reached the thermopause — the top of the thermosphere, around 500 km up.",
+      "Above here is the exosphere, where the atmosphere fades into the vacuum of space.",
+      "Molecules are so sparse they rarely collide. They simply drift, escape, or fall back toward Earth.",
+      "There is no sharp edge where the atmosphere ends. It just thins, and thins, until space begins.",
     ],
   },
 };
@@ -260,6 +280,8 @@ function ChapterOverlay({ chapter, progress, lineProgress, passedLines, fadingOu
   if (!chapter) return null;
 
   const lineCount = chapter.lines.length;
+  const mobileChapterLeft = `calc(${MOBILE_TEMP_OVERLAY_WIDTH}px + (100vw - ${MOBILE_TEMP_OVERLAY_WIDTH}px) * 0.05)`;
+  const mobileChapterRight = `calc((100vw - ${MOBILE_TEMP_OVERLAY_WIDTH}px) * 0.05)`;
   // Each line gets an equal share of progress, with overlap for smooth transitions
   const sliceSize = 1 / lineCount;
 
@@ -270,7 +292,7 @@ function ChapterOverlay({ chapter, progress, lineProgress, passedLines, fadingOu
         inset: 0,
         zIndex: 50,
         overflow: "hidden",
-        pointerEvents: fadingOut ? "none" : "auto",
+        pointerEvents: "none",
         transition: "opacity 0.5s ease",
         opacity: fadingOut ? 0 : 1,
       }}
@@ -330,8 +352,8 @@ function ChapterOverlay({ chapter, progress, lineProgress, passedLines, fadingOu
             key={i}
             style={{
               position: "absolute",
-              left: compact ? "15vw" : 0,
-              right: compact ? "auto" : 0,
+              left: compact ? mobileChapterLeft : 0,
+              right: compact ? mobileChapterRight : 0,
               top: yPercent + "%",
               transform: "translateY(-50%)",
               textAlign: compact ? "left" : "center",
@@ -343,12 +365,13 @@ function ChapterOverlay({ chapter, progress, lineProgress, passedLines, fadingOu
           >
             <div
               style={{
-                fontFamily: "'Domine', Georgia, serif",
+                fontFamily: "'Roboto Mono', monospace",
                 fontSize: compact ? "16px" : "18px",
                 lineHeight: 1.55,
                 color: "rgba(255, 255, 255, 0.95)",
-                maxWidth: compact ? "58vw" : 400,
+                maxWidth: compact ? "none" : 400,
                 margin: compact ? 0 : "0 auto",
+                textAlign: "left",
                 background: "rgba(0, 0, 0, 0.35)",
                 backdropFilter: "blur(12px)",
                 WebkitBackdropFilter: "blur(12px)",
@@ -362,25 +385,6 @@ function ChapterOverlay({ chapter, progress, lineProgress, passedLines, fadingOu
           </div>
         );
       })}
-
-      {/* Scroll hint at bottom */}
-      <div
-        style={{
-          position: "absolute",
-          bottom: 30,
-          left: 0,
-          right: 0,
-          textAlign: "center",
-          fontSize: compact ? "13px" : "14px",
-          color: "rgba(255, 255, 255, 0.28)",
-          letterSpacing: "0.12em",
-          textTransform: "uppercase",
-          fontFamily: "'Roboto Mono', monospace",
-          animation: "pulse 2s ease-in-out infinite",
-        }}
-      >
-        {compact ? "swipe or scroll to continue" : "scroll to continue"}
-      </div>
     </div>
   );
 }
@@ -390,9 +394,10 @@ function TempProfile({ currentKm, showClimate, onDragAltitude, onDragStateChange
   const minimalMobileRail = fullHeight;
   const svgWidth = fullHeight ? 32 : compact ? 54 : 72;
   const svgHeight = Math.max(availableHeight, fullHeight ? 320 : compact ? 280 : 420);
+  const headerBand = fullHeight ? 0 : 8;
   const padding = fullHeight
     ? { top: 18, bottom: 18, left: 7, right: 7 }
-    : { top: 28, bottom: 24, left: 10, right: 10 };
+    : { top: 46, bottom: 24, left: 10, right: 10 };
   const plotW = svgWidth - padding.left - padding.right;
   const plotH = svgHeight - padding.top - padding.bottom;
   const svgRef = useRef(null);
@@ -444,17 +449,26 @@ function TempProfile({ currentKm, showClimate, onDragAltitude, onDragStateChange
     };
 
     const handleEnd = () => setIsDragging(false);
+    const handleVisibilityChange = () => {
+      if (document.hidden) setIsDragging(false);
+    };
 
     window.addEventListener("mousemove", handleMove);
     window.addEventListener("mouseup", handleEnd);
     window.addEventListener("touchmove", handleMove, { passive: false });
     window.addEventListener("touchend", handleEnd);
+    window.addEventListener("touchcancel", handleEnd);
+    window.addEventListener("blur", handleEnd);
+    document.addEventListener("visibilitychange", handleVisibilityChange);
 
     return () => {
       window.removeEventListener("mousemove", handleMove);
       window.removeEventListener("mouseup", handleEnd);
       window.removeEventListener("touchmove", handleMove);
       window.removeEventListener("touchend", handleEnd);
+      window.removeEventListener("touchcancel", handleEnd);
+      window.removeEventListener("blur", handleEnd);
+      document.removeEventListener("visibilitychange", handleVisibilityChange);
     };
   }, [isDragging, eventToAltitude, onDragAltitude]);
 
@@ -482,7 +496,7 @@ function TempProfile({ currentKm, showClimate, onDragAltitude, onDragStateChange
   const curX = tempToX(Math.min(Math.max(curTemp, minTemp), maxTemp));
   const curY = kmToY(Math.min(currentKm, MAX_ALTITUDE_KM));
 
-  const boundaries = [12, 50, 85];
+  const boundaries = [12, 50, 85, 500];
 
   return (
     <div
@@ -526,25 +540,47 @@ function TempProfile({ currentKm, showClimate, onDragAltitude, onDragStateChange
           {!minimalMobileRail && (
             <>
               <text
-                x={padding.left + 6}
-                y={padding.top + 10}
+                x={svgWidth / 2}
+                y={headerBand}
                 fill="rgba(255,255,255,0.52)"
-                fontSize={compact ? "11" : "12"}
+                fontSize="12"
                 fontFamily="'Roboto Mono', monospace"
                 letterSpacing="1.2"
+                textAnchor="middle"
+                dominantBaseline="hanging"
               >
                 TEMP
               </text>
-              <line
-                x1={tempToX(0)} y1={padding.top} x2={tempToX(0)} y2={padding.top + plotH}
-                stroke="rgba(255,255,255,0.18)" strokeWidth="0.75" strokeDasharray="2,3"
-              />
+              <text
+                x={padding.left + 3}
+                y={svgHeight / 2}
+                fill="rgba(255,255,255,0.34)"
+                fontSize="12"
+                fontFamily="'Roboto Mono', monospace"
+                letterSpacing="0.8"
+                textAnchor="middle"
+                transform={`rotate(-90 ${padding.left + 3} ${svgHeight / 2})`}
+              >
+                COLDER
+              </text>
+              <text
+                x={svgWidth - padding.right - 3}
+                y={svgHeight / 2}
+                fill="rgba(255,255,255,0.34)"
+                fontSize="12"
+                fontFamily="'Roboto Mono', monospace"
+                letterSpacing="0.8"
+                textAnchor="middle"
+                transform={`rotate(90 ${svgWidth - padding.right - 3} ${svgHeight / 2})`}
+              >
+                WARMER
+              </text>
 
               {boundaries.map((km) => (
                 <line
                   key={km}
                   x1={padding.left} y1={kmToY(km)} x2={padding.left + plotW} y2={kmToY(km)}
-                  stroke="rgba(255,255,255,0.22)" strokeWidth="1" strokeDasharray="3,3"
+                  stroke="rgba(255,255,255,0.22)" strokeWidth="2" strokeDasharray="3,3"
                 />
               ))}
             </>
@@ -566,7 +602,7 @@ function TempProfile({ currentKm, showClimate, onDragAltitude, onDragStateChange
                   return `${i === 0 ? "M" : "L"} ${x.toFixed(1)} ${y.toFixed(1)}`;
                 })
                 .join(" ")}
-              fill="none" stroke="rgba(255,90,50,0.55)" strokeWidth="1.4" strokeDasharray="3,2" strokeLinecap="round"
+              fill="none" stroke="rgba(255,90,50,0.55)" strokeWidth="2.8" strokeDasharray="3,2" strokeLinecap="round"
             />
           )}
 
@@ -598,14 +634,15 @@ function TempProfile({ currentKm, showClimate, onDragAltitude, onDragStateChange
   );
 }
 
-function AltitudeRuler({ currentKm, onDragAltitude, onDragStateChange, compact, topOffset, availableHeight }) {
+function AltitudeRuler({ currentKm, onDragAltitude, onDragStateChange, compact, topOffset, availableHeight, width }) {
   const rulerRef = useRef(null);
   const [isDragging, setIsDragging] = useState(false);
   const rulerTicks = [0, 10, 20, 50, 85, 100, 200, 300, 400, 500];
-  const rulerHeight = Math.max(availableHeight, compact ? 320 : 420);
-  const rulerWidth = compact ? 52 : 68;
-  const rulerInset = compact ? 14 : 16;
-  const trackHeight = rulerHeight - rulerInset * 2;
+  const rulerHeight = Math.max(availableHeight, 420); // same floor as TempProfile
+  const rulerWidth = width ?? (compact ? 54 : 72);
+  const rulerInset = compact ? 14 : 16;  // bottom inset + tick left anchor
+  const trackTopY = 46;                  // matches TempProfile padding.top exactly
+  const trackH = rulerHeight - trackTopY - rulerInset; // active track span
 
   const eventToAltitude = useCallback((e) => {
     if (!rulerRef.current) return null;
@@ -656,9 +693,9 @@ function AltitudeRuler({ currentKm, onDragAltitude, onDragStateChange, compact, 
     <div
       style={{
         position: "fixed",
-        right: compact ? 8 : 12,
-        top: topOffset,
-        transform: compact ? "translateY(-50%)" : "none",
+        right: 8,
+        top: topOffset + availableHeight / 2,
+        transform: "translateY(-50%)",
         height: rulerHeight,
         width: rulerWidth,
         zIndex: 30,
@@ -685,7 +722,7 @@ function AltitudeRuler({ currentKm, onDragAltitude, onDragStateChange, compact, 
           style={{
             position: "absolute",
             left: compact ? 13 : 16,
-            top: rulerInset,
+            top: trackTopY,
             bottom: rulerInset,
             width: 2,
             background: "rgba(255,255,255,0.18)",
@@ -693,7 +730,7 @@ function AltitudeRuler({ currentKm, onDragAltitude, onDragStateChange, compact, 
         />
 
         {rulerTicks.map((km) => {
-          const bottomOffset = (km / MAX_ALTITUDE_KM) * trackHeight + rulerInset;
+          const bottomOffset = (km / MAX_ALTITUDE_KM) * trackH + rulerInset;
           const isMajor = km === 0 || km === 100 || km === 200 || km === 400;
           return (
             <div key={km} style={{ position: "absolute", bottom: bottomOffset, left: compact ? 13 : 16, transform: "translateY(50%)" }}>
@@ -726,7 +763,7 @@ function AltitudeRuler({ currentKm, onDragAltitude, onDragStateChange, compact, 
         <div
           style={{
             position: "absolute",
-            bottom: Math.min(1, currentKm / MAX_ALTITUDE_KM) * trackHeight + rulerInset,
+            bottom: Math.min(1, currentKm / MAX_ALTITUDE_KM) * trackH + rulerInset,
             left: compact ? 14 : 17,
             transform: "translate(-50%, 50%)",
             width: 0,
@@ -770,16 +807,19 @@ function AltitudeRuler({ currentKm, onDragAltitude, onDragStateChange, compact, 
         <div
           style={{
             position: "absolute",
-            top: 4,
-            left: compact ? 10 : 13,
-            fontSize: compact ? "12px" : "13px",
+            top: 8,   // matches TEMP label y=8 in TempProfile
+            left: 0,
+            right: 0,
+            textAlign: "center",
+            fontSize: "12px",
             fontFamily: "'Roboto Mono', monospace",
-            color: "rgba(255,255,255,0.46)",
-            letterSpacing: "0.08em",
+            color: "rgba(255,255,255,0.52)",
+            letterSpacing: "1.2px",
             textTransform: "uppercase",
+            lineHeight: 1,
           }}
         >
-          km
+          HEIGHT
         </div>
       </div>
     </div>
@@ -1106,6 +1146,21 @@ export default function AtmosphereScrolly() {
   // Ocean = half the viewport height
   const [oceanHeight, setOceanHeight] = useState(400);
   const totalHeight = ATM_HEIGHT + oceanHeight;
+  const [currentKm, setCurrentKm] = useState(0);
+  // const [showClimate, setShowClimate] = useState(false);
+  const showClimate = false;
+  const [isTempDragging, setIsTempDragging] = useState(false);
+  const [isRulerDragging, setIsRulerDragging] = useState(false);
+  const containerRef = useRef(null);
+  const hudRef = useRef(null);
+  const [hudHeight, setHudHeight] = useState(88);
+
+  const getHalfVisibleSceneHeight = useCallback(() => {
+    if (containerRef.current) {
+      return Math.round(containerRef.current.clientHeight / 2);
+    }
+    return Math.round(Math.max(viewport.height - hudHeight, 0) / 2);
+  }, [viewport.height, hudHeight]);
 
   useEffect(() => {
     if (typeof document === "undefined") return undefined;
@@ -1124,19 +1179,14 @@ export default function AtmosphereScrolly() {
   useEffect(() => {
     const onResize = () => {
       setViewport({ width: window.innerWidth, height: window.innerHeight });
-      setOceanHeight(Math.round(window.innerHeight / 2));
+      requestAnimationFrame(() => {
+        setOceanHeight(getHalfVisibleSceneHeight());
+      });
     };
+    onResize();
     window.addEventListener("resize", onResize);
     return () => window.removeEventListener("resize", onResize);
-  }, []);
-
-  const [currentKm, setCurrentKm] = useState(0);
-  const [showClimate, setShowClimate] = useState(false);
-  const [isTempDragging, setIsTempDragging] = useState(false);
-  const [isRulerDragging, setIsRulerDragging] = useState(false);
-  const containerRef = useRef(null);
-  const hudRef = useRef(null);
-  const [hudHeight, setHudHeight] = useState(88);
+  }, [getHalfVisibleSceneHeight]);
 
   // ─── Chapter break state ───
   const [activeChapterKm, setActiveChapterKm] = useState(null);
@@ -1155,12 +1205,19 @@ export default function AtmosphereScrolly() {
 
   const activeChapter = activeChapterKm ? CHAPTER_BREAKS[activeChapterKm] : null;
   const isScaleDragging = isTempDragging || isRulerDragging;
-  const isCompact = viewport.width < 900;
   const isPhone = viewport.width < 680;
-  const showRuler = viewport.width >= 880;
+  const isCompact = viewport.width < 900; // intermediate size — affects fonts/layout but NOT svg widths
+  const showRuler = !isPhone;
   const mobileRailWidth = 0;
+  // Shared overlay width — always 72px on non-phone regardless of isCompact
+  const overlayWidth = isPhone ? 0 : 72;
+  const overlayGap = isPhone ? 0 : 20; // breathing room between SVG edge and content
+  // Content insets — keep text clear of the floating SVGs
+  const contentLeft = isPhone ? 0 : overlayWidth + overlayGap;
+  const contentRight = showRuler ? overlayWidth + overlayGap : 0;
+  const desktopLabelInset = contentLeft + 20;
   const desktopOverlayViewport = Math.max(viewport.height - hudHeight - 24, 420);
-  const desktopOverlayHeight = Math.max(Math.round(desktopOverlayViewport * 0.8), 420);
+  const desktopOverlayHeight = Math.max(Math.round(desktopOverlayViewport * 0.9), 420);
   const desktopOverlayTop = hudHeight + Math.max((desktopOverlayViewport - desktopOverlayHeight) / 2 + 8, 8);
   const profileTopOffset = isPhone ? hudHeight + 8 : desktopOverlayTop;
   const profileAvailableHeight = isPhone ? Math.max(viewport.height - hudHeight - 16, 320) : desktopOverlayHeight;
@@ -1180,11 +1237,15 @@ export default function AtmosphereScrolly() {
     const observer = new ResizeObserver(updateHudHeight);
     observer.observe(hudRef.current);
     return () => observer.disconnect();
-  }, [viewport.width, showClimate, currentKm]);
+  }, [viewport.width, currentKm]);
 
-  // ─── Reset everything ───
-  const handleReset = useCallback(() => {
-    if (!containerRef.current) return;
+  useEffect(() => {
+    requestAnimationFrame(() => {
+      setOceanHeight(getHalfVisibleSceneHeight());
+    });
+  }, [getHalfVisibleSceneHeight, hudHeight, viewport.height]);
+
+  const clearChapterState = useCallback(() => {
     setActiveChapterKm(null);
     setChapterProgress(0);
     setChapterLineProgress([]);
@@ -1196,19 +1257,19 @@ export default function AtmosphereScrolly() {
     prevChapterProgress.current = null;
     chapterActivatedAt.current = 0;
     prevCenterKm.current = 0;
-    const el = containerRef.current;
-    // Scroll back so sea level is at 50% viewport height
-    el.scrollTo({ top: el.scrollHeight - el.clientHeight / 2 - oceanHeight, behavior: "smooth" });
-  }, [oceanHeight]);
+  }, []);
 
   // Called by TempProfile when user drags the dot
   const scrollToAltitude = useCallback((km) => {
     if (!containerRef.current || (activeChapterKm && !isScaleDragging)) return; // block during chapter unless dragging a scale
+    if (isScaleDragging && km <= 0.25) {
+      clearChapterState();
+    }
     const el = containerRef.current;
     const targetPx = altitudeToPixels(km) + oceanHeight;
     const targetScrollTop = el.scrollHeight - el.clientHeight - targetPx;
     el.scrollTop = targetScrollTop;
-  }, [activeChapterKm, isScaleDragging, oceanHeight]);
+  }, [activeChapterKm, clearChapterState, isScaleDragging, oceanHeight]);
 
   const updateAltitude = useCallback(() => {
     if (!containerRef.current) return;
@@ -1217,6 +1278,19 @@ export default function AtmosphereScrolly() {
     const km = pixelsToAltitude(Math.max(0, scrollBottom));
     setCurrentKm(Math.max(0, Math.min(km, MAX_ALTITUDE_KM)));
   }, [oceanHeight]);
+
+  // ─── Reset everything ───
+  const handleReset = useCallback(() => {
+    if (!containerRef.current) return;
+    clearChapterState();
+    const el = containerRef.current;
+    const targetOceanHeight = getHalfVisibleSceneHeight();
+    setOceanHeight(targetOceanHeight);
+    requestAnimationFrame(() => {
+      el.scrollTop = el.scrollHeight - el.clientHeight / 2 - targetOceanHeight;
+      updateAltitude();
+    });
+  }, [clearChapterState, getHalfVisibleSceneHeight, updateAltitude]);
 
   // ─── Detect boundary crossings at viewport center (both directions) ───
   const centerKm = useMemo(() => {
@@ -1267,16 +1341,19 @@ export default function AtmosphereScrolly() {
 
   useEffect(() => {
     if (!isScaleDragging || !activeChapterKm) return;
-    setActiveChapterKm(null);
-    setChapterProgress(0);
-    setChapterLineProgress([]);
-    setChapterPassedLines([]);
-    setChapterFadingOut(false);
+    clearChapterState();
+  }, [isScaleDragging, activeChapterKm, clearChapterState]);
+
+  useEffect(() => {
+    if (!isScaleDragging) {
+      prevCenterKm.current = centerKm;
+      return;
+    }
+
+    prevCenterKm.current = centerKm;
     chapterCooldown.current = false;
     frozenScrollTop.current = null;
-    prevChapterProgress.current = null;
-    chapterActivatedAt.current = 0;
-  }, [isScaleDragging, activeChapterKm]);
+  }, [isScaleDragging, centerKm]);
 
   useEffect(() => {
     if (!activeChapter) {
@@ -1513,7 +1590,7 @@ export default function AtmosphereScrolly() {
           background: "rgba(0,0,0,0.7)",
           backdropFilter: "blur(10px)",
           width: "100%",
-          padding: isPhone ? "10px 12px 10px 8px" : isCompact ? "12px 16px 12px 64px" : "12px 20px 12px 72px",
+          padding: isPhone ? "10px 12px 10px 4px" : "12px 20px",
           display: "flex",
           justifyContent: "space-between",
           alignItems: isPhone ? "flex-start" : "center",
@@ -1545,6 +1622,7 @@ export default function AtmosphereScrolly() {
         </div>
 
         <div style={{ display: "flex", gap: 8, alignItems: "center", marginLeft: isPhone ? "auto" : 0 }}>
+          {/* Climate toggle — commented out
           <button
             onClick={() => setShowClimate(!showClimate)}
             style={{
@@ -1562,6 +1640,7 @@ export default function AtmosphereScrolly() {
           >
             {showClimate ? (isPhone ? "Climate On" : "🌡 Climate On") : "Climate"}
           </button>
+          */}
           <button
             onClick={handleReset}
             style={{
@@ -1602,11 +1681,11 @@ export default function AtmosphereScrolly() {
         style={{
           flex: 1,
           overflowY: "auto",
+          overflowX: "hidden",
           background: bgColor,
           transition: "background 0.4s ease",
           position: "relative",
-          marginLeft: isPhone ? `${mobileRailWidth}px` : 0,
-          width: isPhone ? `calc(100% - ${mobileRailWidth}px)` : "100%",
+          width: "100%",
           ...behindChapterStyle,
         }}
       >
@@ -1614,6 +1693,7 @@ export default function AtmosphereScrolly() {
           style={{
             height: totalHeight + "px",
             position: "relative",
+            overflowX: "hidden",
           }}
         >
           {/* ─── Ocean ─── */}
@@ -1626,44 +1706,8 @@ export default function AtmosphereScrolly() {
               height: oceanHeight + 24,
               transform: "translateY(24px)",
               background: "#0e4d6b",
-              overflow: "hidden",
             }}
           >
-            <svg
-              viewBox="0 0 1440 80"
-              preserveAspectRatio="none"
-              aria-hidden="true"
-              style={{
-                position: "absolute",
-                top: -20,
-                left: 0,
-                width: "200%",
-                height: 48,
-                opacity: 1,
-                animation: "oceanDrift 20s linear infinite",
-              }}
-            >
-              <path
-                d="M0,38 C48,28 96,22 144,26 C192,30 240,44 288,44 C336,44 384,28 432,24 C480,20 528,28 576,34 C624,40 672,44 720,40 C768,36 816,24 864,22 C912,20 960,30 1008,36 C1056,42 1104,44 1152,38 C1200,32 1248,22 1296,22 C1344,22 1392,28 1440,32 L1440,80 L0,80 Z"
-                fill="#1a6b8a"
-              />
-              <path
-                d="M0,44 C60,36 120,28 180,30 C240,32 300,46 360,48 C420,50 480,40 540,32 C600,24 660,24 720,30 C780,36 840,48 900,48 C960,48 1020,34 1080,28 C1140,22 1200,24 1260,30 C1320,36 1380,42 1440,42 L1440,80 L0,80 Z"
-                fill="#145c79"
-              />
-            </svg>
-            {/* Sea level label */}
-            <div style={{
-              position: "absolute",
-              top: -12,
-              left: 80,
-              fontSize: "12px",
-              letterSpacing: "0.15em",
-              textTransform: "uppercase",
-              color: "rgba(255,255,255,0.35)",
-            }}>
-              Sea Level
-            </div>
           </div>
 
           {/* ─── Intro text (below ocean) ─── */}
@@ -1681,7 +1725,7 @@ export default function AtmosphereScrolly() {
               ↑
             </div>
             <div style={{ fontSize: isPhone ? "16px" : "18px", color: "rgba(160, 210, 228, 0.76)", maxWidth: isPhone ? 260 : 460, margin: isPhone ? 0 : "0 auto", lineHeight: 1.65, fontFamily: "'Domine', Georgia, serif" }}>
-              You&apos;re standing at sea level. The atmosphere stretches above you for hundreds of kilometers — but almost all of it, by mass, is closer than you think.
+              You&apos;re at sea level. The atmosphere stretches above you for hundreds of kilometers. Scroll up through it.
             </div>
           </div>
 
@@ -1699,10 +1743,7 @@ export default function AtmosphereScrolly() {
                   left: 0,
                   right: 0,
                   background: layer.color,
-                  borderTop:
-                    layer.startKm > 0
-                      ? "1.5px dashed rgba(255,255,255,0.22)"
-                      : "none",
+                  borderTop: "none",
                 }}
               />
             );
@@ -1715,19 +1756,19 @@ export default function AtmosphereScrolly() {
             const midKm = (layer.startKm + layer.endKm) / 2;
             const subColor = getSubtextColor(midKm);
             const layerOffset = getLayerLabelOffset(layer.name, isCompact, isPhone);
-            const labelBottom = bottomPx + 18 + layerOffset;
+            const labelBottom = bottomPx + 30 + layerOffset;
             const descriptionBottom = labelBottom + (isPhone ? 52 : isCompact ? 76 : 94);
             const textAnchorStyle = isPhone
               ? { left: "15vw", right: "auto", textAlign: "left", maxWidth: 220 }
-              : { left: "auto", right: "10vw", textAlign: "right", maxWidth: isCompact ? 190 : 240 };
+              : { left: "auto", right: contentRight + 20, textAlign: "right", maxWidth: isCompact ? 190 : 240 };
             return (
               <div key={layer.name + "-label"}>
                 <div
                   style={{
                     position: "absolute",
                     bottom: labelBottom,
-                    left: isPhone ? "15vw" : "8vw",
-                    right: isPhone ? "auto" : "8vw",
+                    left: isPhone ? "15vw" : desktopLabelInset,
+                    right: isPhone ? "auto" : contentRight + 20,
                     zIndex: layer.name === "Troposphere" ? 3 : 1,
                     pointerEvents: "none",
                   }}
@@ -1738,14 +1779,14 @@ export default function AtmosphereScrolly() {
                       letterSpacing: "0.08em",
                       textTransform: "uppercase",
                       color: subColor,
-                      opacity: isPhone ? 0.12 : 0.1,
-                      fontWeight: 700,
+                      opacity: isPhone ? 0.34 : 0.32,
+                      fontWeight: 800,
                       lineHeight: 0.95,
                       textAlign: isPhone ? "left" : "right",
                       whiteSpace: "nowrap",
                       transform: "none",
                       transformOrigin: "right bottom",
-                      animation: "layerPulse 6s ease-in-out infinite",
+                      textShadow: "0 0 18px rgba(0,0,0,0.18)",
                     }}
                   >
                     {layer.name}
@@ -1760,11 +1801,12 @@ export default function AtmosphereScrolly() {
                     ...textAnchorStyle,
                   }}
                 >
-                  {!isPhone && (
-                    <div style={{ fontSize: isCompact ? "13px" : "15px", color: subColor, lineHeight: 1.65, fontFamily: "'Domine', Georgia, serif", animation: "layerPulse 6s ease-in-out infinite" }}>
+                  {/* {!isPhone && (
+                    <div style={{ fontSize: isCompact ? "13px" : "15px", color: subColor, lineHeight: 1.65, fontFamily: "'Open Sans', sans-serif", opacity: 0.82, fontWeight: 600 }}>
                       {layer.description}
                     </div>
-                  )}
+                  )} */}
+                  {/* Climate note — commented out
                   {showClimate && layer.climateNote && (
                     <div
                       style={{
@@ -1783,6 +1825,7 @@ export default function AtmosphereScrolly() {
                       {layer.climateNote}
                     </div>
                   )}
+                  */}
                 </div>
               </div>
             );
@@ -1792,9 +1835,7 @@ export default function AtmosphereScrolly() {
           {landmarks.map((lm) => {
             if (lm.km === 0) return null; // skip sea level (has its own border)
             const bottomPx = altitudeToPixels(lm.km) + oceanHeight;
-            const lineColor = lm.isBoundary
-              ? "rgba(255,255,255,0.18)"
-              : "rgba(255,255,255,0.08)";
+            const isMajorBoundary = Boolean(lm.isBoundary);
             return (
               <div
                 key={lm.label + "-line"}
@@ -1803,9 +1844,18 @@ export default function AtmosphereScrolly() {
                   bottom: bottomPx,
                   left: 0,
                   right: 0,
-                  height: 0,
-                  borderTop: `1.5px dashed ${lineColor === "rgba(255,255,255,0.18)" ? "rgba(255,255,255,0.26)" : "rgba(255,255,255,0.16)"}`,
+                  height: isMajorBoundary ? 5 : 0,
+                  // Major: long custom dashes via gradient (border-top can't control dash length)
+                  ...(isMajorBoundary
+                    ? {
+                        backgroundImage: "repeating-linear-gradient(to right, rgba(255,255,255,0.88) 0px, rgba(255,255,255,0.88) 32px, transparent 32px, transparent 52px)",
+                        animation: "boundaryPulse 2.6s ease-in-out infinite",
+                      }
+                    : {
+                        borderTop: "3px dashed rgba(255,255,255,0.28)",
+                      }),
                   pointerEvents: "none",
+                  zIndex: isMajorBoundary ? 5 : "auto",
                 }}
               />
             );
@@ -1814,19 +1864,18 @@ export default function AtmosphereScrolly() {
           {/* ─── Landmarks (left side) ─── */}
           {landmarks.map((lm) => {
             const bottomPx = altitudeToPixels(lm.km) + oceanHeight;
-            const lmTextColor = getTextColor(lm.km);
-            const lmSubColor = getSubtextColor(lm.km);
+            const lmTextColor = lm.km === 0 ? "rgba(235, 243, 248, 0.96)" : getTextColor(lm.km);
+            const lmSubColor = lm.km === 0 ? "rgba(214, 229, 238, 0.88)" : getSubtextColor(lm.km);
             const landmarkOffset = getLandmarkOffset(lm.km, isCompact, isPhone);
-            const landmarkBlockBottom = lm.km === 0
-              ? bottomPx + (isPhone ? 10 : 12)
-              : bottomPx - (isPhone ? 30 : 36);
+            const landmarkGap = isPhone ? 7 : 9;
+            const landmarkTop = totalHeight - bottomPx + landmarkGap;
             return (
               <div
                 key={lm.label}
                 style={{
                   position: "absolute",
-                  bottom: landmarkBlockBottom,
-                  left: isPhone ? `calc(15vw + ${landmarkOffset}px)` : `calc(10vw + ${landmarkOffset}px)`,
+                  top: landmarkTop,
+                  left: isPhone ? `calc(15vw + ${landmarkOffset}px)` : `${desktopLabelInset + landmarkOffset}px`,
                   maxWidth: isPhone ? "58vw" : isCompact ? "42%" : "36%",
                   zIndex: 8,
                 }}
@@ -1877,7 +1926,7 @@ export default function AtmosphereScrolly() {
               padding: isPhone ? "0 56px" : "0 20px",
             }}
           >
-            ~550 km — the boundary blurs into space
+            ~550 km, the boundary blurs into space
           </div>
         </div>
       </div>
@@ -1889,8 +1938,9 @@ export default function AtmosphereScrolly() {
           onDragAltitude={scrollToAltitude}
           onDragStateChange={setIsRulerDragging}
           compact={isCompact}
-          topOffset={desktopOverlayTop}
-          availableHeight={desktopOverlayHeight}
+          topOffset={profileTopOffset}
+          availableHeight={profileAvailableHeight}
+          width={overlayWidth}
         />
       )}
 
@@ -1902,6 +1952,10 @@ export default function AtmosphereScrolly() {
         @keyframes oceanDrift {
           0% { transform: translateX(0); }
           100% { transform: translateX(-50%); }
+        }
+        @keyframes boundaryPulse {
+          0%, 100% { opacity: 0.45; filter: drop-shadow(0 0 3px rgba(255,255,255,0.3)); }
+          50% { opacity: 1; filter: drop-shadow(0 0 10px rgba(255,255,255,0.9)) drop-shadow(0 0 20px rgba(180,210,255,0.5)); }
         }
         @keyframes layerPulse {
           0%, 100% { opacity: 0.1; filter: brightness(1); }
