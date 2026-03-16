@@ -1,0 +1,60 @@
+export const postDetails = {
+  title: "Scroll up",
+  standfirst:
+    "With some help from AI, I designed a scrollable atmosphere. I'm excited to share it.",
+  author: "Baird Langenbrunner",
+  publishDate: "2026-03-14",
+  tags: ["science", "explainer", "personal"],
+  published: true,
+};
+
+import PostHeading from "@/app/components/postheading.tsx";
+import { CloudRainWind } from "lucide-react";
+import Image from "next/image";
+import wallaceHobbsFig19 from "./wallace-hobbs-fig1-9.png";
+
+<PostHeading metadata={postDetails} />
+
+TL;DR: check out [Scroll Up](https://scroll-up.bairdlangenbrunner.com/), a scrollable visualization of the Earth's atmosphere.
+
+<span className="flex justify-center gap-3 text-stone-700">
+  <CloudRainWind size={28} strokeWidth={1.5} />
+  <CloudRainWind size={28} strokeWidth={1.5} />
+  <CloudRainWind size={28} strokeWidth={1.5} />
+</span>
+
+I'm convinced there are infinitely many interesting things to observe in the sky, and just as many explanations behind them. Put me in front of some clouds, a sunset, or even a completely clear and seemingly boring horizon, and I'll make you regret it.
+
+One thing that always shocks me is how little of the atmosphere we live in, but how much more of it we depend on for habitability.
+
+For example, the fifth and outermost "layer" of the atmosphere, the exosphere, by definition stretches to about 10,000 km above the surface. But almost all humans live in the first 2–3 km, meaning we only occupy at most about 0.01% of the atmosphere's volume. (The exosphere is admittedly a bit of a weird layer, and the atmosphere doesn't have a hard edge, but go with me here.)
+
+Yet despite living in this tiny fraction of the volume, we rely on so much more for our survival. The first 12 km or so, for example, contain most of the greenhouse gases that keep the planet's temperature habitable. Some 20 km higher, the mesosphere contains the ozone layer that stretches up to about 35 km, which absorbs most of the sun's harmful ultraviolet radiation and acts as sunscreen for humans and other life. At around 70–100 km up, the very thin but still significant amount of air protects us by burning up meteors before they hit Earth. And while it's not exactly part of our atmosphere, the Earth's magnetic field protects us from cosmic radiation and solar winds — and creates the beautiful auroras we see at higher latitudes.
+
+I've been craving a way to understand and visualize the scale of these things all better. If you've taken any atmospheric or Earth science classes in your life, the image below is the standard way we're taught about atmospheric layers.
+
+<figure className="">
+  <Image
+    src={wallaceHobbsFig19}
+    alt="Textbook profile of atmosphere layers"
+    className="w-[100%] sm:w-[450px] mx-auto"
+  />
+  <figcaption>
+    Figure 1.9 from _Atmospheric Science: A Introductory Survey_, a classic introductory
+    textbook by authors Wallace and Hobbs.
+  </figcaption>
+</figure>
+
+There's a ton of information in that image, but it skips over a lot of nuance as well, and it's really hard to get a sense of the scale of these layers from our place on the ground.
+
+Inspired by [1 Pixel Moon](https://joshworth.com/dev/pixelspace/pixelspace_solarsystem.html), I set out to create something similar for the atmosphere. I had the idea a couple years ago but failed to execute it pretty miserably; my front-end skills are still fairly mid, and I didn't have (or set aside) the proper time to create the ambitious project I had in mind. I also figured someone has probably already done this online, and better than I could, so I dragged my feet out of some ever-present perfectionism. But as of today, I've wilfully avoided searching for anything similar for the atmosphere, because I wanted to try something myself.
+
+Fast forward to about a week ago. I've been using AI tools quite a bit with work lately, and I've been astonished/horrified by how good they've become. I finally got around to trying out the command-line interfaces for Claude and ChatGPT, and once I was a bit more familiar, I pointed them to an empty React project and asked for some help getting the front end going.
+
+These tools were eerily quick at scraping something together, and after a couple days' worth of iterating, I arrived at [Scroll Up](https://scroll-up.bairdlangenbrunner.com/). I'm really happy with it, and honestly, kind of proud of it, even though I only feel partial ownership/authorship of the code. This is a really nice use case of AI for me, though. I struggle with impostor syndrome in essentially every space I enter, and these tools really helped lower that barrier for me.
+
+I hope you like it. Let me know either way. And if you're curious what it looks like inside, the code is on GitHub [here](https://github.com/bairdlangenbrunner/scroll-up).
+
+<br />
+<br />
+<br />
