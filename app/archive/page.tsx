@@ -12,8 +12,8 @@ export default async function ArchivePage() {
     <>
       <div className="paragraph-widths mx-auto">
         <div className="my-[2em] sm:my-[3em]">
-          <h1 className="text-7xl">archive</h1>
-          <div>most recent up top</div>
+          <h1 className="text-base sm:text-xl">archive</h1>
+          {/* <div className="text-base sm:text-xl">most recent up top</div> */}
         </div>
 
         {/* <PostsList posts={posts}  /> */}

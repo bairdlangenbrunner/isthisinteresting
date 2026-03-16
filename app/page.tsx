@@ -15,7 +15,7 @@ export default async function Home() {
         <div className="flex flex-col gap-[2rem]">
           <div>
             <div className="text-sm sm:text-base mb-[1.5rem] sm:mb-[2rem] mt-[1.5rem] sm:mt-[3rem]">
-              <div>welcome to my personal and slightly chaotic blog :)</div>
+              <div>welcome to my personal and very inconsistently updated blog :)</div>
               <div className="mt-[1.5rem] sm:mt-[3rem]">most recent post here:</div>
             </div>
             <ol>
