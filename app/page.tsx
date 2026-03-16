@@ -11,22 +11,12 @@ export default async function Home() {
   return (
     // h-full must be passed to main and to div
     <main className="h-full">
-      <div className="flex flex-col navbar-footer-widths mx-auto h-full">
-        <div className="flex flex-col flex-grow justify-center">
-          <h1 className="sm:text-5xl text-4xl text-right font-[900]">
-            {/* <span className="text-stone-700">is this</span>
-            <br />
-            <span className="text-stone-600">interesting</span>
-            <br />
-            <span className="text-stone-500">though</span>
-            <br />
-            <span className="text-stone-400">seriously</span> */}
-          </h1>
-        </div>
-        <div className="flex flex-col flex-1 justify-start">
+      <div className="flex flex-col justify-center navbar-footer-widths mx-auto h-full">
+        <div className="flex flex-col gap-[2rem]">
           <div>
-            <div className="text-sm sm:text-base text-stone-400 mb-[1rem]">
-              {/* latest post: */}
+            <div className="text-sm sm:text-base mb-[2rem]">
+              welcome to my personal and slightly chaotic blog :) <br></br> <br></br> <br></br> 
+              most recent post here: <br></br> 
             </div>
             <ol>
               {posts[0] && (
