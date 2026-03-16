@@ -12,11 +12,28 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
     // ),
     // div: ({ children }) => <div className="display-block mx-auto">{children}</div>,
 
-    a: ({ children, ...props }) => {
+    a: ({ children, href, ...props }) => {
+      const resolvedHref = href || "";
+      const isInternalLink =
+        resolvedHref.startsWith("/") || resolvedHref.startsWith("#");
+
+      if (isInternalLink) {
+        return (
+          <Link href={resolvedHref} {...props}>
+            {children}
+          </Link>
+        );
+      }
+
       return (
-        <Link {...props} target="_blank" href={props.href || ""}>
+        <a
+          {...props}
+          href={resolvedHref}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
           {children}
-        </Link>
+        </a>
       );
     },
 

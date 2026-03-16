@@ -5,4 +5,5 @@ export interface PostMetadata {
   tags: string[];
   author: string;
   standfirst: string;
+  published: boolean;
 }
