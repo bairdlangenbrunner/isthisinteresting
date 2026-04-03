@@ -1,12 +1,18 @@
 import type { Metadata } from "next";
-import { Open_Sans } from "next/font/google";
+import { Open_Sans, Roboto_Mono } from "next/font/google";
 import "./globals.css";
 import AppShell from "./components/app-shell";
 
 const open_sans = Open_Sans({
   subsets: ["latin"],
   variable: "--font-sans",
-  display: "optional",
+  display: "swap",
+});
+
+const roboto_mono = Roboto_Mono({
+  subsets: ["latin"],
+  variable: "--font-mono",
+  display: "swap",
 });
 
 export const metadata: Metadata = {
@@ -20,7 +26,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={open_sans.variable}>
+    <html lang="en" className={`${open_sans.variable} ${roboto_mono.variable}`}>
       <head>
         <link rel="icon" href="/graphics/globe-alt.svg" type="image/svg+xml" />
       </head>

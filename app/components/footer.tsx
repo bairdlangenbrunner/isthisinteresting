@@ -4,13 +4,13 @@ const Footer = () => {
   return (
     <footer>
       <div className="footer-content">
-        this site is maintained on{" "}
+        this site is maintained on GitHub{" "}
         <a
           href="https://github.com/bairdlangenbrunner/bairdlangenbrunner"
           target="_blank"
           rel="noopener noreferrer"
         >
-          GitHub
+          here
           <span className="sr-only">(opens in new tab)</span>
         </a>
       </div>

@@ -346,18 +346,36 @@
 
   /* ===== BLOG-SPECIFIC WIDTHS ===== */
   .navbar-footer-widths {
-    @apply max-w-[90%];
-    @apply sm:max-w-[40rem];
+    width: 85%;
+    max-width: 524px;
+  }
+
+  @media (min-width: 640px) {
+    .navbar-footer-widths {
+      width: 80%;
+    }
   }
 
   .paragraph-widths {
-    @apply w-[90%];
-    @apply sm:w-[40rem];
+    width: 85%;
+    max-width: 524px;
+  }
+
+  @media (min-width: 640px) {
+    .paragraph-widths {
+      width: 80%;
+    }
   }
 
   .image-widths {
-    @apply w-[100%];
-    @apply sm:w-[30rem];
+    width: 85%;
+    max-width: 524px;
+  }
+
+  @media (min-width: 640px) {
+    .image-widths {
+      width: 80%;
+    }
   }
 
   .code-div {

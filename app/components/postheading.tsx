@@ -4,20 +4,14 @@ import { PostMetadata } from "@/types";
 
 const PostHeading = ({ metadata }: { metadata: PostMetadata }) => {
   return (
-    <div className="flex flex-col p-[15px] gap-[15px] my-[1.25rem] md:my-[1.75rem] bg-[rgb(77,124,15,0.05)] rounded-lg paragraph-widths mx-auto border border-lime-700/20">
-      <div>
-        <h1 className="font-[900] text-3xl md:text-4xl">{metadata.title}</h1>
-      </div>
-
-      <div>
-        <h2 className="font-[650] md:text-[1.125rem] text-base leading-[1.25rem] md:leading-[1.5rem] text-stone-600">
-          {metadata.standfirst}
-        </h2>
-      </div>
-
-      <div className="flex justify-between">
-        <div className="text-xs text-stone-600">{formatDateNoWeekday(metadata.publishDate)}</div>
-        <div className="text-xs text-stone-600">by {metadata.author}</div>
+    <div className="paragraph-widths mx-auto my-[1.25rem] md:my-[1.75rem] font-monospace border-2 border-lime-700 rounded-lg p-[15px]">
+      <h1 className="font-[900] text-3xl md:text-4xl leading-tight">{metadata.title}</h1>
+      <h2 className="font-normal text-sm md:text-base text-stone-500 mt-3 leading-snug">
+        {metadata.standfirst}
+      </h2>
+      <div className="flex justify-between text-xs text-stone-400 mt-4">
+        <span>{formatDateNoWeekday(metadata.publishDate)}</span>
+        <span>{metadata.author}</span>
       </div>
     </div>
   );
