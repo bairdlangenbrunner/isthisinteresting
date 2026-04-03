@@ -6,7 +6,7 @@ type PostModule = {
   postDetails: Record<string, unknown>;
 };
 
-const POSTS_DIR = "./app/(posts)";
+const POSTS_DIR = "./app/notes/(posts)";
 const ISO_DATE_PATTERN = /^\d{4}-\d{2}-\d{2}$/;
 
 function isValidPublishDate(value: string) {
@@ -94,7 +94,7 @@ export async function getPosts(): Promise<PostMetadata[]> {
   const posts = await Promise.all(
     slugs.map(async (slug) => {
       const sourcePath = path.join(POSTS_DIR, slug, "page.mdx");
-      const postModule = (await import(`@/app/(posts)/${slug}/page.mdx`)) as PostModule;
+      const postModule = (await import(`@/app/notes/(posts)/${slug}/page.mdx`)) as PostModule;
 
       if (!("postDetails" in postModule) || typeof postModule.postDetails !== "object" || postModule.postDetails === null) {
         throw new Error(`${sourcePath}: missing exported "postDetails" object.`);

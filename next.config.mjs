@@ -14,34 +14,32 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  basePath: '/isthisinteresting',
-  // output: 'export',
-  // Optional: Change links `/me` -> `/me/` and emit `/me.html` -> `/me/index.html`
-  // trailingSlash: true,
- 
-  // Optional: Prevent automatic `/me` -> `/me/`, instead preserve `href`
-  // skipTrailingSlashRedirect: true,
- 
-  // Optional: Change the output directory `out` -> `dist`
-  // distDir: 'dist',
-  
   pageExtensions: ['ts','tsx','js','jsx','md','mdx'],
   turbopack: {
     root: __dirname
   },
   images: {
     remotePatterns: [
-      {
-        protocol: 'https',
-        hostname: 'github.com'
-      },
-      {
-        protocol: 'https',
-        hostname: 'lh3.googleusercontent.com'
-      }
+      { protocol: 'https', hostname: 'github.com' },
+      { protocol: 'https', hostname: 'lh3.googleusercontent.com' },
+      { protocol: 'https', hostname: 'cdn.jsdelivr.net' },
     ],
     unoptimized: true
-  }
+  },
+  async redirects() {
+    return [
+      {
+        source: '/isthisinteresting',
+        destination: '/notes',
+        permanent: true,
+      },
+      {
+        source: '/isthisinteresting/:path*',
+        destination: '/notes/:path*',
+        permanent: true,
+      },
+    ]
+  },
 }
 
 export default withMDX(nextConfig)

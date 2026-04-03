@@ -24,7 +24,7 @@ export default async function ArchivePage() {
                 key={slug}
                 className="my-[15px] sm:my-[30px] text-base sm:text-xl"
               >
-                <Link href={`/${slug}`} className="font-bold">
+                <Link href={`/notes/${slug}`} className="font-bold">
                   {title}
                 </Link>
                 <div className="text-sm sm:text-base">
