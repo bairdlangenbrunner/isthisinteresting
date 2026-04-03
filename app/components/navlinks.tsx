@@ -15,8 +15,8 @@ const NavLinks = () => {
     <div className="flex justify-between text-sm md:text-lg">
       {/* is this interesting div */}
       <div>
-        <Link key="is this interesting" href="/" className="">
-          <span className="text-white hover:text-[magenta]">
+        <Link key="is this interesting" href="/" className="no-underline">
+          <span className="text-[var(--warm-gray-950)] hover:text-lime-600">
             is this interesting
           </span>
         </Link>
@@ -28,11 +28,11 @@ const NavLinks = () => {
             <Link
               key={link.name}
               href={link.href}
-              className={link.hidden ? "hidden" : ""}
+              className={clsx("no-underline", { hidden: link.hidden })}
             >
               <span
-                className={clsx("text-white hover:text-[magenta]", {
-                  "text-[magenta]": pathname == link.href,
+                className={clsx("text-[var(--warm-gray-950)] hover:text-lime-600", {
+                  "!text-lime-700": pathname == link.href,
                 })}
               >
                 {link.name}

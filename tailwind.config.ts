@@ -13,6 +13,12 @@ const config: Config = {
         serif: ["var(--font-serif)"],
         monospace: ["var(--font-mono)"],
       },
+      colors: {
+        lime: {
+          600: "#65a30d",
+          700: "#4d7c0f",
+        },
+      },
     },
   },
   plugins: [],

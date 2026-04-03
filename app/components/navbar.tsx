@@ -3,7 +3,7 @@ import NavLinks from "./navlinks";
 
 const NavBar = () => {
   return (
-    <nav className="w-screen bg-stone-800 text-stone-50 z-10 py-1 fixed">
+    <nav className="w-full z-10 py-[15px] px-[15px]">
       <div className="navbar-footer-widths mx-auto">
         <NavLinks />
       </div>

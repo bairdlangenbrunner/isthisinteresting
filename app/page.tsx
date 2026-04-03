@@ -11,7 +11,7 @@ export default async function Home() {
   return (
     // h-full must be passed to main and to div
     <main className="h-full">
-      <div className="flex flex-col justify-center navbar-footer-widths mx-auto h-full">
+      <div className="flex flex-col justify-center navbar-footer-widths mx-auto h-full px-[15px]">
         <div className="flex flex-col gap-[2rem]">
           <div>
             <div className="text-sm sm:text-base mb-[1.5rem] sm:mb-[2rem] mt-[1.5rem] sm:mt-[3rem]">

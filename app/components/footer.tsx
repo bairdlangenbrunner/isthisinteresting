@@ -3,8 +3,8 @@ import React from "react";
 
 const Footer = () => {
   return (
-    <div className="w-screen bg-stone-100 pb-[1.5rem] pt-[1rem]">
-      <div className="navbar-footer-widths mx-auto text-right text-xs sm:text-sm navbar-footer-links">
+    <footer className="mt-auto w-full">
+      <div className="text-right text-xs py-[15px] px-[15px]">
         this site is maintained on github{" "}
         <Link
           href="https://github.com/bairdlangenbrunner/isthisinteresting"
@@ -14,7 +14,7 @@ const Footer = () => {
           here
         </Link>
       </div>
-    </div>
+    </footer>
   );
 };
 
